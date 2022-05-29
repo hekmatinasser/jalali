@@ -1,15 +1,15 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
 use DateTimeZone;
-use Hekmatinasser\Verta\Verta;
+use Hekmatinasser\Jalali\Jalali;
 use InvalidArgumentException;
 
 trait Accessor
 {
     /**
-     * Get a part of the Verta object
+     * Get a part of the Jalali object
      *
      * @param string $name
      * @return string|int
@@ -61,7 +61,7 @@ trait Accessor
     }
 
     /**
-     * Set a part of the Verta object
+     * Set a part of the Jalali object
      *
      * @param string $name
      * @param \DateTimeZone|int|string $value
@@ -167,7 +167,7 @@ trait Accessor
      * Set the instance's second
      *
      * @param int $value
-     * @return static
+     * @return $this
      */
     public function second($value)
     {
@@ -210,7 +210,7 @@ trait Accessor
      * @param int $second
      * @param int $microseconds
      *
-     * @return Verta
+     * @return $this
      */
     public function setDateTime($year, $month, $day, $hour, $minute, $second = 0, $microseconds = 0)
     {
@@ -225,9 +225,9 @@ trait Accessor
      * @param int $month
      * @param int $day
      *
-     * @return Verta
+     * @return $this
      */
-    public function setDateJalali($year, $month, $day): Verta
+    public function setDateJalali($year, $month, $day)
     {
         if (static::isValidDate($year, $month, $day)) {
             list($year, $month, $day) = self::getGregorian($year, $month, $day);
@@ -241,10 +241,10 @@ trait Accessor
      * Set the time by time string
      *
      * @param string $time
-     * @return Verta
+     * @return Jalali
      * @throws \InvalidArgumentException
      */
-    public function setTimeString($time): Verta
+    public function setTimeString($time): Jalali
     {
         $time = explode(':', $time);
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
-use Hekmatinasser\Verta\Verta;
+use Hekmatinasser\Jalali\Jalali;
 
 trait Comparison
 {
@@ -59,11 +59,11 @@ trait Comparison
     /**
      * Determines if the instance is equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function eq(Verta $v = null)
+    public function eq(Jalali $v = null)
     {
         return $this == ($v ?: new static());
     }
@@ -71,13 +71,13 @@ trait Comparison
     /**
      * Determines if the instance is equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @see eq()
      *
      * @return bool
      */
-    public function equalTo(Verta $v = null)
+    public function equalTo(Jalali $v = null)
     {
         return $this->eq($v);
     }
@@ -85,11 +85,11 @@ trait Comparison
     /**
      * Determines if the instance is not equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function ne(Verta $v = null)
+    public function ne(Jalali $v = null)
     {
         return ! $this->eq($v);
     }
@@ -97,13 +97,13 @@ trait Comparison
     /**
      * Determines if the instance is not equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @see ne()
      *
      * @return bool
      */
-    public function notEqualTo(Verta $v = null)
+    public function notEqualTo(Jalali $v = null)
     {
         return $this->ne($v);
     }
@@ -111,11 +111,11 @@ trait Comparison
     /**
      * Determines if the instance is greater (after) than another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function gt(Verta $v = null)
+    public function gt(Jalali $v = null)
     {
         return $this > ($v ?: new static());
     }
@@ -123,13 +123,13 @@ trait Comparison
     /**
      * Determines if the instance is greater (after) than another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @see gt()
      *
      * @return bool
      */
-    public function greaterThan(Verta $v = null)
+    public function greaterThan(Jalali $v = null)
     {
         return $this->gt($v);
     }
@@ -137,11 +137,11 @@ trait Comparison
     /**
      * Determines if the instance is greater (after) than or equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function gte(Verta $v = null)
+    public function gte(Jalali $v = null)
     {
         return $this >= ($v ?: new static());
     }
@@ -149,13 +149,13 @@ trait Comparison
     /**
      * Determines if the instance is greater (after) than or equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @see gte()
      *
      * @return bool
      */
-    public function greaterThanOrEqualTo(Verta $v = null)
+    public function greaterThanOrEqualTo(Jalali $v = null)
     {
         return $this->gte($v);
     }
@@ -163,11 +163,11 @@ trait Comparison
     /**
      * Determines if the instance is less (before) than another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function lt(Verta $v = null)
+    public function lt(Jalali $v = null)
     {
         return $this < ($v ?: new static());
     }
@@ -175,13 +175,13 @@ trait Comparison
     /**
      * Determines if the instance is less (before) than another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @see lt()
      *
      * @return bool
      */
-    public function lessThan(Verta $v = null)
+    public function lessThan(Jalali $v = null)
     {
         return $this->lt($v);
     }
@@ -189,11 +189,11 @@ trait Comparison
     /**
      * Determines if the instance is less (before) or equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function lte(Verta $v = null)
+    public function lte(Jalali $v = null)
     {
         return $this <= ($v ?: new static());
     }
@@ -201,13 +201,13 @@ trait Comparison
     /**
      * Determines if the instance is less (before) or equal to another
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @see lte()
      *
      * @return bool
      */
-    public function lessThanOrEqualTo(Verta $v = null)
+    public function lessThanOrEqualTo(Jalali $v = null)
     {
         return $this->lte($v);
     }
@@ -215,13 +215,13 @@ trait Comparison
     /**
      * Determines if the instance is between two others
      *
-     * @param Verta $v1
-     * @param Verta $v2
+     * @param Jalali $v1
+     * @param Jalali $v2
      * @param bool   $equal Indicates if a > and < comparison should be used or <= or >=
      *
      * @return bool
      */
-    public function between(Verta $v1, Verta $v2, $equal = true)
+    public function between(Jalali $v1, Jalali $v2, $equal = true)
     {
         if ($v1->gt($v2)) {
             $temp = $v1;
@@ -239,12 +239,12 @@ trait Comparison
     /**
      * Get the closest date from the instance.
      *
-     * @param Verta $v1
-     * @param Verta $v2
+     * @param Jalali $v1
+     * @param Jalali $v2
      *
      * @return static
      */
-    public function closest(Verta $v1, Verta $v2)
+    public function closest(Jalali $v1, Jalali $v2)
     {
         return $this->diffSeconds($v1) < $this->diffSeconds($v2) ? $v1 : $v2;
     }
@@ -252,12 +252,12 @@ trait Comparison
     /**
      * Get the farthest date from the instance.
      *
-     * @param Verta $v1
-     * @param Verta $v2
+     * @param Jalali $v1
+     * @param Jalali $v2
      *
      * @return static
      */
-    public function farthest(Verta $v1, Verta $v2)
+    public function farthest(Jalali $v1, Jalali $v2)
     {
         return $this->diffSeconds($v1) > $this->diffSeconds($v2) ? $v1 : $v2;
     }
@@ -265,11 +265,11 @@ trait Comparison
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return static
      */
-    public function min(Verta $v = null)
+    public function min(Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 
@@ -279,13 +279,13 @@ trait Comparison
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @see min()
      *
      * @return static
      */
-    public function minimum(Verta $v = null)
+    public function minimum(Jalali $v = null)
     {
         return $this->min($v);
     }
@@ -293,11 +293,11 @@ trait Comparison
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return static
      */
-    public function max(Verta $v = null)
+    public function max(Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 
@@ -307,13 +307,13 @@ trait Comparison
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @see max()
      *
      * @return static
      */
-    public function maximum(Verta $v = null)
+    public function maximum(Jalali $v = null)
     {
         return $this->max($v);
     }
@@ -452,11 +452,11 @@ trait Comparison
      * Compares the formatted values of the two dates.
      *
      * @param string              $format The date formats to compare.
-     * @param Verta|null $v     The instance to compare with or null to use current day.
+     * @param Jalali|null $v     The instance to compare with or null to use current day.
      *
      * @return bool
      */
-    public function isSameAs($format, Verta $v = null)
+    public function isSameAs($format, Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 
@@ -476,11 +476,11 @@ trait Comparison
     /**
      * Checks if the passed in date is in the same year as the instance year.
      *
-     * @param Verta|null $v The instance to compare with or null to use current day.
+     * @param Jalali|null $v The instance to compare with or null to use current day.
      *
      * @return bool
      */
-    public function isSameYear(Verta $v = null)
+    public function isSameYear(Jalali $v = null)
     {
         return $this->isSameAs('Y', $v);
     }
@@ -499,12 +499,12 @@ trait Comparison
      * Checks if the passed in date is in the same month as the instance month (and year if needed).
      *        $this->assertFalse($datetime->isCurrentMonth());
 
-     * @param Verta|null $v         The instance to compare with or null to use current day.
+     * @param Jalali|null $v         The instance to compare with or null to use current day.
      * @param bool                $ofSameYear Check if it is the same month in the same year.
      *
      * @return bool
      */
-    public function isSameMonth(Verta $v = null, $ofSameYear = false)
+    public function isSameMonth(Jalali $v = null, $ofSameYear = false)
     {
         $format = $ofSameYear ? 'Y-m' : 'm';
 
@@ -514,11 +514,11 @@ trait Comparison
     /**
      * Checks if the passed in date is the same day as the instance current day.
      *
-     * @param Verta $v
+     * @param Jalali $v
      *
      * @return bool
      */
-    public function isSameDay(Verta $v)
+    public function isSameDay(Jalali $v)
     {
         return $this->formatDate() === $v->formatDate();
     }
@@ -526,11 +526,11 @@ trait Comparison
     /**
      * Check if its the birthday. Compares the date/month values of the two dates.
      *
-     * @param Verta|null $dt The instance to compare with or null to use current day.
+     * @param Jalali|null $dt The instance to compare with or null to use current day.
      *
      * @return bool
      */
-    public function isBirthday(Verta $v = null)
+    public function isBirthday(Jalali $v = null)
     {
         return $this->isSameAs('md', $v);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
 use DateTime;
 use DateTimeZone;
@@ -44,7 +44,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta now datetime
+     * Create a Jalali now datetime
      *
      *
      * @param null $timezone
@@ -56,7 +56,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance for today.
+     * Create a Jalali instance for today.
      *
      * @param \DateTimeZone|string|null $timezone
      *
@@ -68,7 +68,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance for tomorrow.
+     * Create a Jalali instance for tomorrow.
      *
      * @param \DateTimeZone|string|null $timezone
      *
@@ -80,7 +80,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance for yesterday.
+     * Create a Jalali instance for yesterday.
      *
      * @param \DateTimeZone|string|null $timezone
      *
@@ -92,7 +92,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance from a DateTime one
+     * Create a Jalali instance from a DateTime one
      *
      * @param $datetime [optional]
      * @param \DateTimeZone|string|null $timezone [optional]
@@ -125,7 +125,7 @@ trait Creator
     }
 
     /**
-     * Create a DateTime instance from Verta
+     * Create a DateTime instance from Jalali
      *
      * @return datetime $datetime
      */
@@ -138,17 +138,7 @@ trait Creator
     }
 
     /**
-     * Create a Carbon instance from Verta
-     *
-     * @return Carbon
-     */
-    public function toCarbon()
-    {
-        return Carbon::instance($this->datetime());
-    }
-
-    /**
-     * Create a Verta instance from a DateTime one
+     * Create a Jalali instance from a DateTime one
      *
      * @param $datetime [optional]
      * @param bool $timezone [optional]
@@ -181,7 +171,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance from a DateTime one
+     * Create a Jalali instance from a DateTime one
      *
      * @param string $format
      * @param string $datetime [optional]
@@ -206,7 +196,7 @@ trait Creator
     }
 
     /**
-     * Create a new Verta instance from a specific date and time gregorain.
+     * Create a new Jalali instance from a specific date and time gregorain.
      *
      * If any of feild are set to null their now() values will
      * be used.
@@ -227,7 +217,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta from just a date gregorian.
+     * Create a Jalali from just a date gregorian.
      *
      * @param int|null                  $year
      * @param int|null                  $month
@@ -242,7 +232,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance from just a time gregorian.
+     * Create a Jalali instance from just a time gregorian.
      *
      * @param int|null                  $hour
      * @param int|null                  $minute
@@ -257,7 +247,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance from a timestamp.
+     * Create a Jalali instance from a timestamp.
      *
      * @param int                       $timestamp
      * @param \DateTimeZone|string|null $timezone
@@ -290,7 +280,7 @@ trait Creator
     }
 
     /**
-     * Create a new Verta instance from a specific date and time gregorain.
+     * Create a new Jalali instance from a specific date and time gregorain.
      *
      * If any of feild are set to null their now() values will
      * be used.
@@ -325,7 +315,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta from just a date gregorian.
+     * Create a Jalali from just a date gregorian.
      *
      * @param int|null $year
      * @param int|null $month
@@ -340,7 +330,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance from just a time gregorian.
+     * Create a Jalali instance from just a time gregorian.
      *
      * @param int|null $hour
      * @param int|null $minute
@@ -355,7 +345,7 @@ trait Creator
     }
 
     /**
-     * Create a new Verta instance from a specific date and time.
+     * Create a new Jalali instance from a specific date and time.
      *
      * If any of feild are set to null their now() values will
      * be used.
@@ -390,7 +380,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta from just a date.
+     * Create a Jalali from just a date.
      *
      * @param int|null $year
      * @param int|null $month
@@ -405,7 +395,7 @@ trait Creator
     }
 
     /**
-     * Create a Verta instance from just a time.
+     * Create a Jalali instance from just a time.
      *
      * @param int|null $hour
      * @param int|null $minute

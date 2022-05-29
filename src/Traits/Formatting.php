@@ -1,15 +1,15 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
 use Hekmatinasser\Notowo\Notowo;
-use Hekmatinasser\Verta\Verta;
+use Hekmatinasser\Jalali\Jalali;
 use ReturnTypeWillChange;
 
 trait Formatting
 {
     /**
-     * Reset the format used to the default when type juggling a Verta instance to a string
+     * Reset the format used to the default when type juggling a Jalali instance to a string
      */
     public static function resetStringFormat()
     {
@@ -17,7 +17,7 @@ trait Formatting
     }
 
     /**
-     * Set the default format used when type juggling a Verta instance to a string
+     * Set the default format used when type juggling a Jalali instance to a string
      *
      * @param string $format
      */
@@ -396,11 +396,11 @@ trait Formatting
     /**
      * get difference in all
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return string
      */
-    public function formatDifference(Verta $v = null)
+    public function formatDifference(Jalali $v = null)
     {
         $units = [
             static::SECONDS_PER_MINUTE,

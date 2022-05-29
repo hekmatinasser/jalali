@@ -1,19 +1,19 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
-use Hekmatinasser\Verta\Verta;
+use Hekmatinasser\Jalali\Jalali;
 
 trait Difference
 {
     /**
      * Get the difference in years
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffYears(Verta $v = null)
+    public function diffYears(Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 
@@ -23,11 +23,11 @@ trait Difference
     /**
      * Get the difference in months
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffMonths(Verta $v = null)
+    public function diffMonths(Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 
@@ -37,11 +37,11 @@ trait Difference
     /**
      * Get the difference in weeks
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffWeeks(Verta $v = null)
+    public function diffWeeks(Jalali $v = null)
     {
         return (int) ($this->diffDays($v) / static::DAYS_PER_WEEK);
     }
@@ -49,11 +49,11 @@ trait Difference
     /**
      * Get the difference in days
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffDays(Verta $v = null)
+    public function diffDays(Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 
@@ -63,11 +63,11 @@ trait Difference
     /**
      * Get the difference in hours
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffHours(Verta $v = null)
+    public function diffHours(Jalali $v = null)
     {
         return (int) ($this->diffSeconds($v) / static::SECONDS_PER_MINUTE / static::MINUTES_PER_HOUR);
     }
@@ -75,11 +75,11 @@ trait Difference
     /**
      * Get the difference in minutes
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffMinutes(Verta $v = null)
+    public function diffMinutes(Jalali $v = null)
     {
         return (int) ($this->diffSeconds($v) / static::SECONDS_PER_MINUTE);
     }
@@ -87,11 +87,11 @@ trait Difference
     /**
      * Get the difference in seconds
      *
-     * @param Verta|null $v
+     * @param Jalali|null $v
      *
      * @return int
      */
-    public function diffSeconds(Verta $v = null)
+    public function diffSeconds(Jalali $v = null)
     {
         $v = $v ?: static::now($this->getTimezone());
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Hekmatinasser\Verta;
+namespace Hekmatinasser\Jalali;
 
-interface VertaInterface
+interface JalaliInterface
 {
     /**
      * The day constants

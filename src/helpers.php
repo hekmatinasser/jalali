@@ -1,13 +1,13 @@
 <?php
 
-if (! function_exists('verta')) {
+if (! function_exists('jalali')) {
     /**
      * @param null $datetime
      * @param null $timezone
-     * @return \Hekmatinasser\Verta\Verta
+     * @return \Hekmatinasser\Jalali\Jalali
      */
-    function verta($datetime = null, $timezone = null)
+    function jalali($datetime = null, $timezone = null)
     {
-        return new \Hekmatinasser\Verta\Verta($datetime, $timezone);
+        return new \Hekmatinasser\Jalali\Jalali($datetime, $timezone);
     }
 }

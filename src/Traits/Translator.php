@@ -1,6 +1,6 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
 trait Translator
 {
@@ -19,7 +19,7 @@ trait Translator
     public static $locale;
 
     /**
-     * Reset the format used to the default when type juggling a Verta instance to a string
+     * Reset the format used to the default when type juggling a Jalali instance to a string
      */
     public static function resetLocale()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
 trait Boundaries
 {

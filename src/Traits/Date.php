@@ -1,8 +1,8 @@
 <?php
 
-namespace Hekmatinasser\Verta\Traits;
+namespace Hekmatinasser\Jalali\Traits;
 
-use Hekmatinasser\Verta\VertaInterface;
+use Hekmatinasser\Jalali\JalaliInterface;
 
 trait Date
 {
@@ -20,28 +20,28 @@ trait Date
      *
      * @var string
      */
-    protected static $stringFormat = VertaInterface::DEFAULT_STRING_FORMAT;
+    protected static $stringFormat = JalaliInterface::DEFAULT_STRING_FORMAT;
 
     /**
      * First day of week.
      *
      * @var int
      */
-    protected static $weekStartsAt = VertaInterface::SATURDAY;
+    protected static $weekStartsAt = JalaliInterface::SATURDAY;
 
     /**
      * Last day of week.
      *
      * @var int
      */
-    protected static $weekEndsAt = VertaInterface::FRIDAY;
+    protected static $weekEndsAt = JalaliInterface::FRIDAY;
 
     /**
      * Days of weekend.
      *
      * @var array
      */
-    protected static $weekendDays = [VertaInterface::THURSDAY, VertaInterface::FRIDAY];
+    protected static $weekendDays = [JalaliInterface::THURSDAY, JalaliInterface::FRIDAY];
 
     /**
      * number day in months gregorian
