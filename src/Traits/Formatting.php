@@ -2,8 +2,8 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
-use Hekmatinasser\Notowo\Notowo;
 use Hekmatinasser\Jalali\Jalali;
+use Hekmatinasser\Notowo\Notowo;
 use ReturnTypeWillChange;
 
 trait Formatting
