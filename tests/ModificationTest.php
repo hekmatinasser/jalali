@@ -83,18 +83,18 @@ class ModificationTest extends TestCase
     {
         $datetime = Jalali::parse('1398-10-10 21:30:50');
 
-        $result = $datetime->addHour(6)->format('Y-m-d H:i:s');
+        $result = $datetime->addHour()->format('Y-m-d H:i:s');
 
-        $this->assertEquals('1398-10-11 03:30:50', $result);
+        $this->assertEquals('1398-10-10 22:30:50', $result);
     }
 
     public function testSubHours()
     {
         $datetime = Jalali::parse('1398-10-10 21:30:50');
 
-        $result = $datetime->subHour(30)->format('Y-m-d H:i:s');
+        $result = $datetime->subHour()->format('Y-m-d H:i:s');
 
-        $this->assertEquals('1398-10-09 15:30:50', $result);
+        $this->assertEquals('1398-10-10 20:30:50', $result);
     }
 
     public function testAddMinutes()
@@ -110,9 +110,9 @@ class ModificationTest extends TestCase
     {
         $datetime = Jalali::parse('1398-10-10 21:30:50');
 
-        $result = $datetime->subMinute(30)->format('Y-m-d H:i:s');
+        $result = $datetime->subMinute()->format('Y-m-d H:i:s');
 
-        $this->assertEquals('1398-10-10 21:00:50', $result);
+        $this->assertEquals('1398-10-10 21:29:50', $result);
     }
 
     public function testAddSeconds()
@@ -131,6 +131,15 @@ class ModificationTest extends TestCase
         $result = $datetime->subSeconds(30)->format('Y-m-d H:i:s');
 
         $this->assertEquals('1398-10-10 21:29:50', $result);
+    }
+
+    public function testStartMinute()
+    {
+        $datetime = Jalali::parse('1398-10-10 21:30:50');
+
+        $result = $datetime->startMinute()->format('Y-m-d H:i:s');
+
+        $this->assertEquals('1398-10-10 21:30:00', $result);
     }
 
     public function testStartDay()

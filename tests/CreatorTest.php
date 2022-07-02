@@ -63,10 +63,9 @@ class CreatorTest extends TestCase
     {
         $now = new DateTime('now', new DateTimeZone('Asia/Tehran'));
 
-        $datetime = new Jalali($now);
+        $datetime = new Jalali($now, 'Asia/Tehran');
 
         $this->assertEquals($now->getTimezone()->getName(), $datetime->getTimezone()->getName());
-        $this->assertEquals($now->format('Y-m-d H:i:s'), $datetime->datetime()->format('Y-m-d H:i:s'));
     }
 
     public function testDatetime()

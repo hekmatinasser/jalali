@@ -3,7 +3,7 @@
 namespace Hekmatinasser\Jalali\Traits;
 
 use DateTimeZone;
-use Hekmatinasser\Jalali\Jalali;
+use Hekmatinasser\Jalali\Exceptions\UnknownSetterException;
 use InvalidArgumentException;
 
 trait Accessor
@@ -15,7 +15,7 @@ trait Accessor
      * @return string|int
      *@throws InvalidArgumentException
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         static $formats = [
             'year' => 'Y',
@@ -29,14 +29,14 @@ trait Accessor
             'dayOfYear' => 'z',
             'weekOfYear' => 'W',
             'daysInMonth' => 't',
+            'quarter' => 'q',
             'timestamp' => 'U',
         ];
 
         if (array_key_exists($name, $formats)) {
             return (int) $this->format($formats[$name]);
-        } elseif ($name === 'quarter') {
-            return (int) ceil($this->month / static::MONTHS_PER_QUARTER);
-        } elseif ($name === 'timezone') {
+        }
+        elseif ($name === 'timezone') {
             return $this->getTimezone()->getName();
         }
 
@@ -49,52 +49,52 @@ trait Accessor
      * @param string $name
      * @return bool
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
         try {
             $this->__get($name);
-        } catch (InvalidArgumentException $e) {
+            return true;
+        } catch (InvalidArgumentException) {
             return false;
         }
-
-        return true;
     }
 
     /**
      * Set a part of the Jalali object
      *
      * @param string $name
-     * @param \DateTimeZone|int|string $value
-     * @throws \InvalidArgumentException
+     * @param int|DateTimeZone|string $value
+     * @throws InvalidArgumentException
      */
-    public function __set($name, $value)
+    public function __set(string $name, int|DateTimeZone|string $value)
     {
-        switch ($name) {
+       switch ($name) {
             case 'year':
             case 'month':
             case 'day':
+                list($year, $month, $day) = explode('-', $this->format('Y-n-j'));
+                $$name = $value;
+                $this->setDateJalali($year, $month, $day);
+                break;
             case 'hour':
             case 'minute':
             case 'second':
-                list($year, $month, $day, $hour, $minute, $second) = explode('-', $this->format('Y-n-j-G-i-s'));
+            case 'micro':
+                list($hour, $minute, $second, $micro) = explode('-', $this->format('G-i-s-u'));
                 $$name = $value;
-                $this->setDateTime($year, $month, $day, $hour, $minute, $second);
-
+                $this->setTime($hour, $minute, $second, $micro);
                 break;
 
             case 'timestamp':
-                $this->setTimestamp($value);
-
+                $this->timestamp($value);
                 break;
 
             case 'timezone':
-            case 'tz':
-                $this->setTimezone(new DateTimeZone($value));
-
+                $this->timezone(self::createTimeZone($value));
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf("Unknown setter '%s'", $name));
+                throw new UnknownSetterException($name);
         }
     }
 
@@ -104,10 +104,9 @@ trait Accessor
      * @param int $value
      * @return static
      */
-    public function year($value)
+    public function year(int $value): static
     {
         $this->year = $value;
-
         return $this;
     }
 
@@ -117,10 +116,9 @@ trait Accessor
      * @param int $value
      * @return static
      */
-    public function month($value)
+    public function month(int $value): static
     {
         $this->month = $value;
-
         return $this;
     }
 
@@ -130,10 +128,9 @@ trait Accessor
      * @param int $value
      * @return static
      */
-    public function day($value)
+    public function day(int $value): static
     {
         $this->day = $value;
-
         return $this;
     }
 
@@ -143,10 +140,9 @@ trait Accessor
      * @param int $value
      * @return static
      */
-    public function hour($value)
+    public function hour(int $value): static
     {
         $this->hour = $value;
-
         return $this;
     }
 
@@ -156,10 +152,9 @@ trait Accessor
      * @param int $value
      * @return static
      */
-    public function minute($value)
+    public function minute(int $value): static
     {
         $this->minute = $value;
-
         return $this;
     }
 
@@ -167,12 +162,23 @@ trait Accessor
      * Set the instance's second
      *
      * @param int $value
-     * @return $this
+     * @return static
      */
-    public function second($value)
+    public function second(int $value): static
     {
         $this->second = $value;
+        return $this;
+    }
 
+    /**
+     * Set the instance's micro
+     *
+     * @param int $value
+     * @return static
+     */
+    public function micro(int $value): static
+    {
+        $this->micro = $value;
         return $this;
     }
 
@@ -182,21 +188,22 @@ trait Accessor
      * @param int $value
      * @return static
      */
-    public function timestamp($value)
+    public function timestamp(int $value): static
     {
-        return parent::setTimestamp($value);
+        $this->setTimestamp($value);
+        return $this;
     }
 
     /**
      * Alias for setTimezone()
      *
-     * @param \DateTimeZone|string $value
-     *
+     * @param DateTimeZone|string $value
      * @return static
      */
-    public function timezone($value)
+    public function timezone(DateTimeZone|string $value): static
     {
-        return parent::setTimezone(new DateTimeZone($value));
+        $this->setTimezone(static::createTimeZone($value));
+        return $this;
     }
 
     /**
@@ -208,32 +215,26 @@ trait Accessor
      * @param int $hour
      * @param int $minute
      * @param int $second
-     * @param int $microseconds
-     *
-     * @return $this
+     * @param int $micro
+     * @return static
      */
-    public function setDateTime($year, $month, $day, $hour, $minute, $second = 0, $microseconds = 0)
+    public function setDateTime(int $year, int $month, int $day, int $hour, int $minute, int $second = 0, int $micro = 0): static
     {
-        return $this->setDateJalali($year, $month, $day)->setTime($hour, $minute, $second, $microseconds);
+        return $this->setDateJalali($year, $month, $day)->setTime($hour, $minute, $second, $micro);
     }
 
     /**
-     * Sets the current date of the DateTime object to a different date.
-     * Calls modify as a workaround for a php bug
+     * Sets the current date together
      *
      * @param int $year
      * @param int $month
      * @param int $day
-     *
-     * @return $this
+     * @return static
      */
-    public function setDateJalali($year, $month, $day)
+    public function setDateJalali(int $year, int $month, int $day): static
     {
-        if (static::isValidDate($year, $month, $day)) {
-            list($year, $month, $day) = self::getGregorian($year, $month, $day);
-            parent::setDate($year, $month, $day);
-        }
-
+        list($year, $month, $day) = self::jalaliToGregorian($year, $month, $day);
+        $this->setDate($year, $month, $day);
         return $this;
     }
 
@@ -241,21 +242,21 @@ trait Accessor
      * Set the time by time string
      *
      * @param string $time
-     * @return Jalali
-     * @throws \InvalidArgumentException
+     * @return static
+     * @throws InvalidArgumentException
      */
-    public function setTimeString($time): Jalali
+    public function setTimeString(string $time): static
     {
-        $time = explode(':', $time);
+        $units = preg_split("/[:.]+/", $time);
 
-        $hour = $time[0];
-        $minute = $time[1] ?? 0;
-        $second = $time[2] ?? 0;
+        $hour = $units[0];
+        $minute = $units[1] ?? 0;
+        $second = $units[2] ?? 0;
+        $micro = $units[3] ?? 0;
 
-        if (static::isValidTime($hour, $minute, $second)) {
-            parent::setTime($hour, $minute, $second, 0);
-        }
+        self::validTime($hour, $minute, $second, $micro);
 
+        $this->setTime($hour, $minute, $second, $micro);
         return $this;
     }
 }

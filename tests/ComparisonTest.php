@@ -79,6 +79,20 @@ class ComparisonTest extends TestCase
         $this->assertEquals(-9, $result);
     }
 
+    public function testDiffWeeks()
+    {
+        $datetime = Jalali::parse('1398-10-10 21:30:50');
+
+        $result = $datetime->diffWeeks(Jalali::parse('1398-10-10 21:30:50'));
+        $this->assertEquals(0, $result);
+
+        $result = $datetime->diffWeeks(Jalali::parse('1398-11-15 21:30:50'));
+        $this->assertEquals(5, $result);
+
+        $result = $datetime->diffWeeks(Jalali::parse('1398-10-01 21:30:50'));
+        $this->assertEquals(-1, $result);
+    }
+
     public function testDiffHours()
     {
         $datetime = Jalali::parse('1398-10-10 21:30:50');
@@ -133,6 +147,17 @@ class ComparisonTest extends TestCase
         $this->assertFalse($result);
     }
 
+    public function testNotEqualTo()
+    {
+        $datetime = Jalali::parse('1398-10-10 21:30:50');
+
+        $result = $datetime->ne(Jalali::parse('1398-10-10 21:30:50'));
+        $this->assertFalse($result);
+
+        $result = $datetime->notEqualTo(Jalali::parse('1398-10-10 21:30:51'));
+        $this->assertTrue($result);
+    }
+
     public function testGreaterThan()
     {
         $datetime = Jalali::parse('1398-10-10 21:30:50');
@@ -140,7 +165,7 @@ class ComparisonTest extends TestCase
         $result = $datetime->gt(Jalali::parse('1398-10-10 21:30:50'));
         $this->assertFalse($result);
 
-        $result = $datetime->gt(Jalali::parse('1398-10-10 21:30:49'));
+        $result = $datetime->greaterThanOrEqualTo(Jalali::parse('1398-10-10 21:30:49'));
         $this->assertTrue($result);
     }
 
@@ -176,7 +201,7 @@ class ComparisonTest extends TestCase
         $result = $datetime->lte(Jalali::parse('1398-10-10 21:30:50'));
         $this->assertTrue($result);
 
-        $result = $datetime->lte(Jalali::parse('1398-10-10 21:30:51'));
+        $result = $datetime->lessThanOrEqualTo(Jalali::parse('1398-10-10 21:30:51'));
         $this->assertTrue($result);
 
 

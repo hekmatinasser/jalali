@@ -2,16 +2,58 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
+use Hekmatinasser\Jalali\Jalali;
+
 trait Boundaries
 {
     /**
+     * Resets the second to 00
+     *
+     * @return static
+     */
+    public function startMinute(): static
+    {
+        return $this->setTime($this->hour, $this->minute);
+    }
+
+    /**
+     * Resets the second to 59
+     *
+     * @return static
+     */
+    public function endMinute(): static
+    {
+        return $this->setTime($this->hour, $this->minute, 59, 999999);
+    }
+
+    /**
+     * Resets the minute and second to 00:00
+     *
+     * @return static
+     */
+    public function startHour(): static
+    {
+        return $this->setTime($this->hour, 0);
+    }
+
+    /**
+     * Resets the minute and second to 59:59
+     *
+     * @return static
+     */
+    public function endHour(): static
+    {
+        return $this->setTime($this->hour, 59, 59, 999999);
+    }
+
+    /**
      * Resets the time to 00:00:00
      *
      * @return static
      */
-    public function startMinute()
+    public function startDay(): static
     {
-        return $this->setTime($this->hour, $this->minute, 0);
+        return $this->setTime(0, 0);
     }
 
     /**
@@ -19,49 +61,9 @@ trait Boundaries
      *
      * @return static
      */
-    public function endMinute()
+    public function endDay(): static
     {
-        return $this->setTime($this->hour, $this->minute, 59);
-    }
-
-    /**
-     * Resets the time to 00:00:00
-     *
-     * @return static
-     */
-    public function startHour()
-    {
-        return $this->setTime($this->hour, 0, 0);
-    }
-
-    /**
-     * Resets the time to 23:59:59
-     *
-     * @return static
-     */
-    public function endHour()
-    {
-        return $this->setTime($this->hour, 59, 59);
-    }
-
-    /**
-     * Resets the time to 00:00:00
-     *
-     * @return static
-     */
-    public function startDay()
-    {
-        return $this->setTime(0, 0, 0);
-    }
-
-    /**
-     * Resets the time to 23:59:59
-     *
-     * @return static
-     */
-    public function endDay()
-    {
-        return $this->setTime(23, 59, 59);
+        return $this->setTime(23, 59, 59, 999999);
     }
 
     /**
@@ -69,12 +71,12 @@ trait Boundaries
      *
      * @return static
      */
-    public function startWeek()
+    public function startWeek(): static
     {
-        while ($this->dayOfWeek !== static::$weekStartsAt) {
-            $this->subDay();
+        $diff = ($this->dayOfWeek - static::$weekStartsAt);
+        if ($diff > 0) {
+            $this->subDays($diff);
         }
-
         return $this->startDay();
     }
 
@@ -83,12 +85,12 @@ trait Boundaries
      *
      * @return static
      */
-    public function endWeek()
+    public function endWeek(): static
     {
-        while ($this->dayOfWeek !== static::$weekEndsAt) {
-            $this->addDay();
+        $diff = (static::$weekEndsAt - $this->dayOfWeek);
+        if ($diff > 0) {
+            $this->addDays($diff);
         }
-
         return $this->endDay();
     }
 
@@ -97,9 +99,9 @@ trait Boundaries
      *
      * @return static
      */
-    public function startMonth()
+    public function startMonth(): static
     {
-        return $this->setDateTime($this->year, $this->month, 1, 0, 0, 0);
+        return $this->setDateTime($this->year, $this->month, 1, 0, 0);
     }
 
     /**
@@ -107,9 +109,9 @@ trait Boundaries
      *
      * @return static
      */
-    public function endMonth()
+    public function endMonth(): static
     {
-        return $this->setDateTime($this->year, $this->month, $this->daysInMonth, 23, 59, 59);
+        return $this->setDateTime($this->year, $this->month, $this->daysInMonth, 23, 59, 59, 999999);
     }
 
     /**
@@ -117,11 +119,11 @@ trait Boundaries
      *
      * @return static
      */
-    public function startQuarter()
+    public function startQuarter(): static
     {
         $month = ($this->quarter - 1) * static::MONTHS_PER_QUARTER + 1;
 
-        return $this->setDateTime($this->year, $month, 1, 0, 0, 0);
+        return $this->setDateTime($this->year, $month, 1, 0, 0);
     }
 
     /**
@@ -129,7 +131,7 @@ trait Boundaries
      *
      * @return static
      */
-    public function endQuarter()
+    public function endQuarter(): static
     {
         $month = $this->quarter * static::MONTHS_PER_QUARTER;
 
@@ -141,9 +143,9 @@ trait Boundaries
      *
      * @return static
      */
-    public function startYear()
+    public function startYear(): static
     {
-        return $this->setDateTime($this->year, 1, 1, 0, 0, 0);
+        return $this->setDateTime($this->year, 1, 1, 0, 0);
     }
 
     /**
@@ -151,10 +153,9 @@ trait Boundaries
      *
      * @return static
      */
-    public function endYear()
+    public function endYear(): static
     {
-        $day = $this->format('L') ? 30 : 29;
-
-        return $this->setDateTime($this->year, 12, $day, 23, 59, 59);
+        $year = $this->year;
+        return $this->setDateTime($year, 12, self::isLeapYear($year) ? 30 : 29, 23, 59, 59, 999999);
     }
 }

@@ -3,374 +3,265 @@
 namespace Hekmatinasser\Jalali\Traits;
 
 use Hekmatinasser\Jalali\Jalali;
+use JetBrains\PhpStorm\Pure;
 
 trait Comparison
 {
     /**
-     * check jalali the instance is a leap year
-     *
-     * @param int $year
+     * Determines if the instance is equal to another
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public static function isLeapYear($year)
+    public function eq(Jalali $datetime = null): bool
     {
-        return in_array(($year % 33), [1 , 5 , 9 , 13 ,17 , 22 , 26 , 30]);
-    }
-
-    /**
-     * validate a jalali date (jalali equivalent of php checkdate() function)
-     *
-     * @param int $month
-     * @param int $day
-     * @param int $year
-     * @return bool
-     */
-    public static function isValidDate($year, $month, $day)
-    {
-        if ($year < 0 || $year > 32766) {
-            return false;
-        }
-        if ($month < 1 || $month > 12) {
-            return false;
-        }
-        $dayLastMonthJalali = static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[intval($month) - 1];
-        if ($day < 1 || $day > $dayLastMonthJalali) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * validate a time
-     *
-     * @param int $hour
-     * @param int $minute
-     * @param int $second
-     * @return bool
-     */
-    public static function isValidTime($hour, $minute, $second)
-    {
-        return $hour >= 0 && $hour <= 23
-            && $minute >= 0 && $minute <= 59
-            && $second >= 0 && $second <= 59;
+        return $this == ($datetime ?: new self());
     }
 
     /**
      * Determines if the instance is equal to another
-     *
-     * @param Jalali $v
-     *
-     * @return bool
-     */
-    public function eq(Jalali $v = null)
-    {
-        return $this == ($v ?: new static());
-    }
-
-    /**
-     * Determines if the instance is equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @see eq()
-     *
      * @return bool
      */
-    public function equalTo(Jalali $v = null)
+    public function equalTo(Jalali $datetime = null): bool
     {
-        return $this->eq($v);
+        return $this->eq($datetime);
     }
 
     /**
      * Determines if the instance is not equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public function ne(Jalali $v = null)
+    public function ne(Jalali $datetime = null): bool
     {
-        return ! $this->eq($v);
+        return ! $this->eq($datetime);
     }
 
     /**
      * Determines if the instance is not equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @see ne()
-     *
      * @return bool
      */
-    public function notEqualTo(Jalali $v = null)
+    public function notEqualTo(Jalali $datetime = null): bool
     {
-        return $this->ne($v);
+        return $this->ne($datetime);
     }
 
     /**
      * Determines if the instance is greater (after) than another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public function gt(Jalali $v = null)
+    public function gt(Jalali $datetime = null): bool
     {
-        return $this > ($v ?: new static());
+        return $this > ($datetime ?: new self());
     }
 
     /**
      * Determines if the instance is greater (after) than another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @see gt()
-     *
      * @return bool
      */
-    public function greaterThan(Jalali $v = null)
+    public function greaterThan(Jalali $datetime = null): bool
     {
-        return $this->gt($v);
+        return $this->gt($datetime);
     }
 
     /**
      * Determines if the instance is greater (after) than or equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public function gte(Jalali $v = null)
+    public function gte(Jalali $datetime = null): bool
     {
-        return $this >= ($v ?: new static());
+        return $this >= ($datetime ?: new self());
     }
 
     /**
      * Determines if the instance is greater (after) than or equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
+     * @return bool
      * @see gte()
-     *
-     * @return bool
      */
-    public function greaterThanOrEqualTo(Jalali $v = null)
+    public function greaterThanOrEqualTo(Jalali $datetime = null): bool
     {
-        return $this->gte($v);
+        return $this->gte($datetime);
     }
 
     /**
      * Determines if the instance is less (before) than another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public function lt(Jalali $v = null)
+    public function lt(Jalali $datetime = null): bool
     {
-        return $this < ($v ?: new static());
+        return $this < ($datetime ?: new self());
     }
 
     /**
      * Determines if the instance is less (before) than another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @see lt()
-     *
      * @return bool
      */
-    public function lessThan(Jalali $v = null)
+    public function lessThan(Jalali $datetime = null): bool
     {
-        return $this->lt($v);
+        return $this->lt($datetime);
     }
 
     /**
      * Determines if the instance is less (before) or equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public function lte(Jalali $v = null)
+    public function lte(Jalali $datetime = null): bool
     {
-        return $this <= ($v ?: new static());
+        return $this <= ($datetime ?: new self());
     }
 
     /**
      * Determines if the instance is less (before) or equal to another
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
+     * @return bool
      * @see lte()
-     *
-     * @return bool
      */
-    public function lessThanOrEqualTo(Jalali $v = null)
+    public function lessThanOrEqualTo(Jalali $datetime = null): bool
     {
-        return $this->lte($v);
+        return $this->lte($datetime);
     }
 
     /**
      * Determines if the instance is between two others
-     *
-     * @param Jalali $v1
-     * @param Jalali $v2
-     * @param bool   $equal Indicates if a > and < comparison should be used or <= or >=
-     *
+     * @param Jalali $first
+     * @param Jalali $second
+     * @param bool $equal Indicates if a > and < comparison should be used or <= or >=
      * @return bool
      */
-    public function between(Jalali $v1, Jalali $v2, $equal = true)
+    public function between(Jalali $first, Jalali $second, bool $equal = true): bool
     {
-        if ($v1->gt($v2)) {
-            $temp = $v1;
-            $v1 = $v2;
-            $v2 = $temp;
-        }
+        list($less, $greater) = $first->lt($second) ? [$first, $second] : [$second, $first];
 
         if ($equal) {
-            return $this->gte($v1) && $this->lte($v2);
+            return $this->gte($less) && $this->lte($greater);
         }
 
-        return $this->gt($v1) && $this->lt($v2);
+        return $this->gt($less) && $this->lt($greater);
     }
 
     /**
      * Get the closest date from the instance.
-     *
-     * @param Jalali $v1
-     * @param Jalali $v2
-     *
+     * @param Jalali $first
+     * @param Jalali $second
      * @return static
      */
-    public function closest(Jalali $v1, Jalali $v2)
+    public function closest(Jalali $first, Jalali $second): static
     {
-        return $this->diffSeconds($v1) < $this->diffSeconds($v2) ? $v1 : $v2;
+        return $this->diffSeconds($first) < $this->diffSeconds($second) ? $first : $second;
     }
 
     /**
      * Get the farthest date from the instance.
-     *
-     * @param Jalali $v1
-     * @param Jalali $v2
-     *
+     * @param Jalali $first
+     * @param Jalali $second
      * @return static
      */
-    public function farthest(Jalali $v1, Jalali $v2)
+    public function farthest(Jalali $first, Jalali $second): static
     {
-        return $this->diffSeconds($v1) > $this->diffSeconds($v2) ? $v1 : $v2;
+        return $this->diffSeconds($first) > $this->diffSeconds($second) ? $first : $second;
     }
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
-     *
-     * @param Jalali|null $v
-     *
+     * @param Jalali $datetime
      * @return static
      */
-    public function min(Jalali $v = null)
+    public function min(Jalali $datetime): static
     {
-        $v = $v ?: static::now($this->getTimezone());
-
-        return $this->lt($v) ? $this : $v;
+        return $this->lt($datetime) ? $this : $datetime;
     }
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
-     *
-     * @param Jalali|null $v
-     *
+     * @param Jalali $datetime
+     * @return static
      * @see min()
-     *
-     * @return static
      */
-    public function minimum(Jalali $v = null)
+    public function minimum(Jalali $datetime): static
     {
-        return $this->min($v);
+        return $this->min($datetime);
     }
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
-     *
-     * @param Jalali|null $v
-     *
+     * @param Jalali $datetime
      * @return static
      */
-    public function max(Jalali $v = null)
+    public function max(Jalali $datetime): static
     {
-        $v = $v ?: static::now($this->getTimezone());
-
-        return $this->gt($v) ? $this : $v;
+        return $this->gt($datetime) ? $this : $datetime;
     }
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
-     *
-     * @param Jalali|null $v
-     *
+     * @param Jalali $datetime
+     * @return static
      * @see max()
-     *
-     * @return static
      */
-    public function maximum(Jalali $v = null)
+    public function maximum(Jalali $datetime): static
     {
-        return $this->max($v);
+        return $this->max($datetime);
     }
 
     /**
      * Determines if the instance is a weekday
-     *
      * @return bool
      */
-    public function isWeekday()
+    #[Pure] public function isWeekday(): bool
     {
         return ! $this->isWeekend();
     }
 
     /**
      * Determines if the instance is a weekend day
-     *
      * @return bool
      */
-    public function isWeekend()
+    public function isWeekend(): bool
     {
         return in_array($this->dayOfWeek, static::$weekendDays);
     }
 
     /**
      * Determines if the instance is yesterday
-     *
      * @return bool
      */
-    public function isYesterday()
+    public function isYesterday(): bool
     {
         return $this->formatDate() === static::yesterday($this->getTimezone())->formatDate();
     }
 
     /**
      * Determines if the instance is today
-     *
      * @return bool
      */
-    public function isToday()
+    public function isToday(): bool
     {
         return $this->formatDate() === static::now($this->getTimezone())->formatDate();
     }
 
     /**
      * Determines if the instance is tomorrow
-     *
      * @return bool
      */
-    public function isTomorrow()
+    public function isTomorrow(): bool
     {
         return $this->formatDate() === static::tomorrow($this->getTimezone())->formatDate();
     }
 
     /**
      * Determines if the instance is within the next week
-     *
      * @return bool
      */
     public function isNextWeek(): bool
@@ -380,227 +271,198 @@ trait Comparison
 
     /**
      * Determines if the instance is within the last week
-     *
      * @return bool
      */
-    public function isLastWeek()
+    public function isLastWeek(): bool
     {
         return $this->weekOfYear === static::now($this->getTimezone())->subWeek()->weekOfYear;
     }
 
     /**
      * Determines if the instance is within the next month
-     *
      * @return bool
      */
-    public function isNextMonth()
+    public function isNextMonth(): bool
     {
         return $this->format('Y-m') === static::now($this->getTimezone())->addMonth()->format('Y-m');
     }
 
     /**
      * Determines if the instance is within the last month
-     *
      * @return bool
      */
-    public function isLastMonth()
+    public function isLastMonth(): bool
     {
         return $this->format('Y-m') === static::now($this->getTimezone())->subMonth()->format('Y-m');
     }
 
     /**
      * Determines if the instance is within next year
-     *
      * @return bool
      */
-    public function isNextYear()
+    public function isNextYear(): bool
     {
         return $this->year === static::now($this->getTimezone())->addYear()->year;
     }
 
     /**
      * Determines if the instance is within the previous year
-     *
      * @return bool
      */
-    public function isLastYear()
+    public function isLastYear(): bool
     {
         return $this->year === static::now($this->getTimezone())->subYear()->year;
     }
 
     /**
-     * Determines if the instance is in the future, ie. greater (after) than now
-     *
+     * Determines if the instance is in the future, greater (after) than now
      * @return bool
      */
-    public function isFuture()
+    public function isFuture(): bool
     {
-        return $this->gt(static::now($this->getTimezone()));
+        return $this->gt();
     }
 
     /**
-     * Determines if the instance is in the past, ie. less (before) than now
-     *
+     * Determines if the instance is in the past, less (before) than now
      * @return bool
      */
-    public function isPast()
+    public function isPast(): bool
     {
-        return $this->lt(static::now($this->getTimezone()));
+        return $this->lt();
     }
 
     /**
      * Compares the formatted values of the two dates.
-     *
-     * @param string              $format The date formats to compare.
-     * @param Jalali|null $v     The instance to compare with or null to use current day.
-     *
+     * @param string $format The date formats to compare.
+     * @param Jalali|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
-    public function isSameAs($format, Jalali $v = null)
+    public function isSameAs(string $format, Jalali $datetime = null): bool
     {
-        $v = $v ?: static::now($this->getTimezone());
+        $datetime = $datetime ?: new self();
 
-        return $this->format($format) === $v->format($format);
+        return $this->format($format) === $datetime->format($format);
     }
 
     /**
      * Determines if the instance is in the current year
-     *
      * @return bool
      */
-    public function isCurrentYear()
+    public function isCurrentYear(): bool
     {
         return $this->isSameYear();
     }
 
     /**
-     * Checks if the passed in date is in the same year as the instance year.
-     *
-     * @param Jalali|null $v The instance to compare with or null to use current day.
-     *
-     * @return bool
-     */
-    public function isSameYear(Jalali $v = null)
-    {
-        return $this->isSameAs('Y', $v);
-    }
-
-    /**
      * Determines if the instance is in the current month
-     *
      * @return bool
      */
-    public function isCurrentMonth()
+    public function isCurrentMonth(): bool
     {
         return $this->isSameMonth();
     }
 
     /**
-     * Checks if the passed in date is in the same month as the instance month (and year if needed).
-     *        $this->assertFalse($datetime->isCurrentMonth());
-
-     * @param Jalali|null $v         The instance to compare with or null to use current day.
-     * @param bool                $ofSameYear Check if it is the same month in the same year.
-     *
+     * Checks if the passed in date is in the same year as the instance year.
+     * @param Jalali|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
-    public function isSameMonth(Jalali $v = null, $ofSameYear = false)
+    public function isSameYear(Jalali $datetime = null): bool
     {
-        $format = $ofSameYear ? 'Y-m' : 'm';
+        return $this->isSameAs('Y', $datetime);
+    }
 
-        return $this->isSameAs($format, $v);
+    /**
+     * Checks if the passed in date is in the same month as the instance month (and year if needed).
+     * @param Jalali|null $datetime The instance to compare with or null to use current day.
+     * @param bool $sameYear Check if it is the same month in the same year.
+     * @return bool
+     */
+    public function isSameMonth(Jalali $datetime = null, bool $sameYear = false): bool
+    {
+        return $this->isSameAs($sameYear ? 'Y-m' : 'm', $datetime);
     }
 
     /**
      * Checks if the passed in date is the same day as the instance current day.
-     *
-     * @param Jalali $v
-     *
+     * @param Jalali|null $datetime
      * @return bool
      */
-    public function isSameDay(Jalali $v)
+    public function isSameDay(Jalali $datetime = null): bool
     {
-        return $this->formatDate() === $v->formatDate();
+        return $this->isSameAs('Y-m-d', $datetime);
     }
 
     /**
-     * Check if its the birthday. Compares the date/month values of the two dates.
-     *
-     * @param Jalali|null $dt The instance to compare with or null to use current day.
-     *
+     * Check if date the birthday. Compares the date/month values of the two dates.
+     * @param Jalali|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
-    public function isBirthday(Jalali $v = null)
+    public function isBirthday(Jalali $datetime = null): bool
     {
-        return $this->isSameAs('md', $v);
+        return $this->isSameAs('m-d', $datetime);
     }
 
     /**
      * Checks if this day is a Saturday.
-     *
      * @return bool
      */
-    public function isSaturday()
+    public function isSaturday(): bool
     {
         return $this->dayOfWeek === static::SATURDAY;
     }
 
     /**
      * Checks if this day is a Sunday.
-     *
      * @return bool
      */
-    public function isSunday()
+    public function isSunday(): bool
     {
         return $this->dayOfWeek === static::SUNDAY;
     }
 
     /**
      * Checks if this day is a Monday.
-     *
      * @return bool
      */
-    public function isMonday()
+    public function isMonday(): bool
     {
         return $this->dayOfWeek === static::MONDAY;
     }
 
     /**
      * Checks if this day is a Tuesday.
-     *
      * @return bool
      */
-    public function isTuesday()
+    public function isTuesday(): bool
     {
         return $this->dayOfWeek === static::TUESDAY;
     }
 
     /**
      * Checks if this day is a Wednesday.
-     *
      * @return bool
      */
-    public function isWednesday()
+    public function isWednesday(): bool
     {
         return $this->dayOfWeek === static::WEDNESDAY;
     }
 
     /**
      * Checks if this day is a Thursday.
-     *
      * @return bool
      */
-    public function isThursday()
+    public function isThursday(): bool
     {
         return $this->dayOfWeek === static::THURSDAY;
     }
 
     /**
      * Checks if this day is a Friday.
-     *
      * @return bool
      */
-    public function isFriday()
+    public function isFriday(): bool
     {
         return $this->dayOfWeek === static::FRIDAY;
     }

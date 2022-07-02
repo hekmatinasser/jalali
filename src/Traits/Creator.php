@@ -5,40 +5,41 @@ namespace Hekmatinasser\Jalali\Traits;
 use DateTime;
 use DateTimeZone;
 use Exception;
-use InvalidArgumentException;
+use Hekmatinasser\Jalali\Exceptions\InvalidDatetimeException;
+use Hekmatinasser\Jalali\Exceptions\UnknownTimezoneException;
 
 trait Creator
 {
     /**
      * create object of Jalali
      *
-     * @param DateTime|string|int|null $datetime [optional]
-     * @param DateTimeZone|string|null $timezone [optional]
-     * @internal param timestamp $timestamp [optional]
+     * @param DateTime|string|int|null $datetime
+     * @param DateTimeZone|string|null $timezone
      */
     public function __construct($datetime = null, $timezone = null)
     {
-        $dt = $datetime;
+        $gregorianDatetime = $datetime;
         if (empty($datetime)) {
-            $dt = 'now';
+            $gregorianDatetime = 'now';
         } elseif (is_string($datetime)) {
-            $dt = self::faToEnNumbers(self::arToEnNumbers($datetime));
+            $gregorianDatetime = self::faToEnNumbers(self::arToEnNumbers($datetime));
         } elseif ($datetime instanceof DateTime) {
-            $dt = "@{$datetime->getTimestamp()}";
+            $gregorianDatetime = "@{$datetime->getTimestamp()}";
         } elseif (is_int($datetime)) {
-            $dt = "@$datetime";
+            $gregorianDatetime = "@$datetime";
         }
 
         try {
             if ($datetime instanceof DateTime) {
-                parent::__construct($dt);
+                parent::__construct($gregorianDatetime);
                 parent::setTimezone($datetime->getTimezone());
             } else {
-                parent::__construct($dt, static::createTimeZone($timezone));
+                parent::__construct($gregorianDatetime, static::createTimeZone($timezone));
             }
+//            parent::__construct($gregorianDatetime, static::createTimeZone($timezone));
             self::loadMessages();
-        } catch (Exception $exception) {
-            throw new InvalidArgumentException(sprintf("Unknown datetime '%s'", $datetime));
+        } catch (Exception) {
+            throw new InvalidDatetimeException($datetime);
         }
     }
 
@@ -49,56 +50,56 @@ trait Creator
      * @param null $timezone
      * @return static
      */
-    public static function now($timezone = null)
+    public static function now($timezone = null): static
     {
-        return new static(null, $timezone);
+        return new self(null, $timezone);
     }
 
     /**
      * Create a Jalali instance for today.
      *
-     * @param \DateTimeZone|string|null $timezone
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function today($timezone = null)
+    public static function today(DateTimeZone|string $timezone = null): static
     {
-        return (new static(null, $timezone))->startDay();
+        return self::now($timezone)->startDay();
     }
 
     /**
      * Create a Jalali instance for tomorrow.
      *
-     * @param \DateTimeZone|string|null $timezone
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function tomorrow($timezone = null)
+    public static function tomorrow(DateTimeZone|string $timezone = null): static
     {
-        return (new static(null, $timezone))->addDay()->startDay();
+        return self::now($timezone)->addDay()->startDay();
     }
 
     /**
      * Create a Jalali instance for yesterday.
      *
-     * @param \DateTimeZone|string|null $timezone
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function yesterday($timezone = null)
+    public static function yesterday(DateTimeZone|string $timezone = null): static
     {
-        return (new static(null, $timezone))->subDay()->startDay();
+        return self::now($timezone)->subDay()->startDay();
     }
 
     /**
      * Create a Jalali instance from a DateTime one
      *
-     * @param $datetime [optional]
-     * @param \DateTimeZone|string|null $timezone [optional]
+     * @param $datetime
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function instance($datetime = null, $timezone = null)
+    public static function instance($datetime = null, DateTimeZone|string $timezone = null): static
     {
         return new static($datetime, $timezone);
     }
@@ -108,7 +109,7 @@ trait Creator
      *
      * @return static
      */
-    public function copy()
+    public function copy(): static
     {
         return clone $this;
     }
@@ -118,99 +119,71 @@ trait Creator
      *
      * @return static
      */
-    public function clone()
+    public function clone(): static
     {
         return clone $this;
     }
 
     /**
-     * Create a DateTime instance from Jalali
-     *
-     * @return datetime $datetime
-     */
-    public function datetime()
-    {
-        $dt = new DateTime(date('Y-m-d H:i:s', $this->getTimestamp()));
-        $dt->setTimezone($this->getTimezone());
-
-        return $dt;
-    }
-
-    /**
      * Create a Jalali instance from a DateTime one
      *
-     * @param $datetime [optional]
-     * @param bool $timezone [optional]
+     * @param $datetime
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function parse($datetime, $timezone = null)
+    public static function parse($datetime, DateTimeZone|string $timezone = null): static
     {
         self::loadMessages();
-        $names = array_map(function ($value) {
-            return " $value ";
-        }, array_values(self::$messages['year_months']));
-        $values = array_map(function ($value) {
-            return "-$value-";
-        }, range(1, 12));
-
+        $names = array_map(function ($value) { return " $value "; }, array_values(self::$messages['year_months']));
+        $values = array_map(function ($value) { return "-$value-"; }, range(1, 12));
         $formatted = str_replace($names, $values, $datetime);
+
         $formatted = str_replace(array_values(self::$messages['year_months']), range(1, 12), $formatted);
+
         $parse = date_parse($formatted);
-        if ($parse['error_count'] > 0 || ! self::isValidDate($parse['year'], $parse['month'], $parse['day']) || ! self::isValidTime($parse['hour'], $parse['minute'], $parse['second'])) {
-            throw new InvalidArgumentException(sprintf("Unknown datetime '%s'", $datetime));
+        if ($parse['error_count'] > 0) {
+            throw new InvalidDatetimeException($datetime);
         }
 
-        list($year, $month, $day) = self::getGregorian($parse['year'], $parse['month'], $parse['day']);
-        list($hour, $minute, $second) = [$parse['hour'], $parse['minute'], $parse['second']];
-
-        $datetime = sprintf('%04s-%02s-%02s %02s:%02s:%02s', $year, $month, $day, $hour, $minute, $second);
-
-        return new static($datetime, $timezone);
+        return self::createJalali($parse['year'], $parse['month'], $parse['day'], $parse['hour'], $parse['minute'], $parse['second'], $timezone);
     }
 
     /**
      * Create a Jalali instance from a DateTime one
      *
      * @param string $format
-     * @param string $datetime [optional]
-     * @param bool $timezone [optional]
+     * @param string $datetime
+     * @param bool|null $timezone
      * @return static
      */
-    public static function parseFormat($format, $datetime, $timezone = null)
+    public static function parseFormat(string $format, string $datetime, bool $timezone = null): static
     {
         self::loadMessages();
         $formatted = str_replace(array_values(self::$messages['year_months']), range(1, 12), $datetime);
 
         $parse = date_parse_from_format($format, $formatted);
-        if ($parse['error_count'] > 0 || ! self::isValidDate($parse['year'], $parse['month'], $parse['day']) || ! self::isValidTime($parse['hour'], $parse['minute'], $parse['second'])) {
-            throw new InvalidArgumentException(sprintf("Unknown datetime '%s'", $datetime));
+        if ($parse['error_count'] > 0) {
+            throw new InvalidDatetimeException($datetime);
         }
-        list($year, $month, $day) = self::getGregorian($parse['year'], $parse['month'], $parse['day']);
-        list($hour, $minute, $second) = [$parse['hour'], $parse['minute'], $parse['second']];
 
-        $datetime = sprintf('%04s-%02s-%02s %02s:%02s:%02s', $year, $month, $day, $hour, $minute, $second);
-
-        return new static($datetime, $timezone);
+        return self::createJalali($parse['year'], $parse['month'], $parse['day'], $parse['hour'], $parse['minute'], $parse['second'], $timezone);
     }
 
     /**
      * Create a new Jalali instance from a specific date and time gregorain.
      *
-     * If any of feild are set to null their now() values will
-     * be used.
-     *
-     * @param int|null                  $year
-     * @param int|null                  $month
-     * @param int|null                  $day
-     * @param int|null                  $hour
-     * @param int|null                  $minute
-     * @param int|null                  $second
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function create($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null)
+    public static function create(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
         return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
@@ -218,96 +191,81 @@ trait Creator
     /**
      * Create a Jalali from just a date gregorian.
      *
-     * @param int|null                  $year
-     * @param int|null                  $month
-     * @param int|null                  $day
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createDate($year = null, $month = null, $day = null, $timezone = null)
+    public static function createDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
-        return static::create($year, $month, $day, null, null, null, $timezone);
+        list($hour, $minute, $second) = explode('-', (new DateTime)->format('G-i-s'));
+        return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
     /**
      * Create a Jalali instance from just a time gregorian.
      *
-     * @param int|null                  $hour
-     * @param int|null                  $minute
-     * @param int|null                  $second
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createTime($hour = null, $minute = null, $second = null, $timezone = null)
+    public static function createTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        return static::create(null, null, null, $hour, $minute, $second, $timezone);
+        list($year, $month, $day) = explode('-', (new DateTime)->format('Y-n-j'));
+        return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
     /**
      * Create a Jalali instance from a timestamp.
      *
-     * @param int                       $timestamp
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $timestamp
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createTimestamp($timestamp, $timezone = null)
+    public static function createTimestamp(int $timestamp, DateTimeZone|string $timezone = null): static
     {
-        return static::instance($timestamp, $timezone);
+        return new static($timestamp, $timezone);
     }
 
     /**
      * @param null $timezone
      * @return DateTimeZone|string|null
      */
-    protected static function createTimeZone($timezone = null)
+    protected static function createTimeZone($timezone = null): DateTimeZone|string|null
     {
         if ($timezone === null) {
             return new DateTimeZone(date_default_timezone_get());
         } elseif ($timezone instanceof DateTimeZone) {
             return $timezone;
-        } else {
-            $tz = @timezone_open(strval($timezone));
-            if ($tz === false) {
-                throw new InvalidArgumentException(sprintf("Unknown timezone '%s'", $tz));
-            }
-
-            return $tz;
+        } elseif ($dataTimeZone = @timezone_open((string) $timezone)) {
+            return $dataTimeZone;
         }
+        throw new UnknownTimezoneException((string) $timezone);
     }
 
     /**
      * Create a new Jalali instance from a specific date and time gregorain.
      *
-     * If any of feild are set to null their now() values will
-     * be used.
-     *
-     * @param int|null $year
-     * @param int|null $month
-     * @param int|null $day
-     * @param int|null $hour
-     * @param int|null $minute
-     * @param int|null $second
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createGregorian($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null)
+    public static function createGregorian(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        $now = (new DateTime())->format('Y-n-j-G-i-s');
-        $defaults = array_combine(['year', 'month', 'day', 'hour', 'minute', 'second'], explode('-', $now));
-
-        $year = $year ?? intval($defaults['year']);
-        $month = $month ?? intval($defaults['month']);
-        $day = $day ?? intval($defaults['day']);
-        $hour = $hour ?? intval($defaults['hour']);
-        $minute = $minute ?? intval($defaults['minute']);
-        $second = $second ?? intval($defaults['second']);
-
         if (! checkdate($month, $day, $year) || ! static::isValidTime($hour, $minute, $second)) {
-            throw new \InvalidArgumentException('Unknown datetime');
+            throw new InvalidDatetimeException("$year-$month-$day $hour:$minute:$second");
         }
 
         return new static(sprintf('%s-%s-%s %s:%s:%s', $year, $month, $day, $hour, $minute, $second), $timezone);
@@ -316,95 +274,87 @@ trait Creator
     /**
      * Create a Jalali from just a date gregorian.
      *
-     * @param int|null $year
-     * @param int|null $month
-     * @param int|null $day
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createGregorianDate($year = null, $month = null, $day = null, $timezone = null)
+    public static function createGregorianDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
-        return static::createGregorian($year, $month, $day, null, null, null, $timezone);
+        list($hour, $minute, $second) = explode('-', (new DateTime)->format('G-i-s'));
+        return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
     /**
      * Create a Jalali instance from just a time gregorian.
      *
-     * @param int|null $hour
-     * @param int|null $minute
-     * @param int|null $second
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createGregorianTime($hour = null, $minute = null, $second = null, $timezone = null)
+    public static function createGregorianTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        return static::createGregorian(null, null, null, $hour, $minute, $second, $timezone);
+        list($year, $month, $day) = explode('-', (new DateTime)->format('Y-n-j'));
+        return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
     /**
      * Create a new Jalali instance from a specific date and time.
      *
-     * If any of feild are set to null their now() values will
-     * be used.
-     *
-     * @param int|null $year
-     * @param int|null $month
-     * @param int|null $day
-     * @param int|null $hour
-     * @param int|null $minute
-     * @param int|null $second
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createJalali($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null)
+    public static function createJalali(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        $now = (new static())->format('Y-n-j-G-i-s');
-        $defaults = array_combine(['year', 'month', 'day', 'hour', 'minute', 'second'], explode('-', $now));
+        self::validDateTime($year, $month, $day, $hour, $minute, $second);
 
-        $year = $year ?? intval($defaults['year']);
-        $month = $month ?? intval($defaults['month']);
-        $day = $day ?? intval($defaults['day']);
-        $hour = $hour ?? intval($defaults['hour']);
-        $minute = $minute ?? intval($defaults['minute']);
-        $second = $second ?? intval($defaults['second']);
+        list($year, $month, $day) = self::jalaliToGregorian($year, $month, $day);
+        $datetime = sprintf('%04s-%02s-%02s %02s:%02s:%02s', $year, $month, $day, $hour, $minute, $second);
 
-        if (! static::isValidDate($year, $month, $day) || ! static::isValidTime($hour, $minute, $second)) {
-            throw new \InvalidArgumentException('Unknown datetime');
-        }
-
-        return static::parse(sprintf('%s-%s-%s %s:%s:%s', $year, $month, $day, $hour, $minute, $second));
+        return new static($datetime, $timezone);
     }
 
     /**
      * Create a Jalali from just a date.
      *
-     * @param int|null $year
-     * @param int|null $month
-     * @param int|null $day
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createJalaliDate($year = null, $month = null, $day = null, $timezone = null)
+    public static function createJalaliDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
-        return static::createJalali($year, $month, $day, null, null, null, $timezone);
+        list($hour, $minute, $second) = explode('-', (new static())->format('G-i-s'));
+        return static::createJalali($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
     /**
      * Create a Jalali instance from just a time.
      *
-     * @param int|null $hour
-     * @param int|null $minute
-     * @param int|null $second
-     * @param \DateTimeZone|string|null $timezone
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param DateTimeZone|string|null $timezone
      *
      * @return static
      */
-    public static function createJalaliTime($hour = null, $minute = null, $second = null, $timezone = null)
+    public static function createJalaliTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        return static::createJalali(null, null, null, $hour, $minute, $second, $timezone);
+        list($year, $month, $day) = explode('-', (new static())->format('Y-n-j'));
+        return static::createJalali($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 }

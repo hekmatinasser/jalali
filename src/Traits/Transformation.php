@@ -2,88 +2,102 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
+use DateTime;
+use Exception;
+
 trait Transformation
 {
     /**
-     * gregorian to jalali convertion
+     * convert gregorian to jalali
      *
-     * @param int $g_y
-     * @param int $g_m
-     * @param int $g_d
+     * @param int $gregorianYear
+     * @param int $gregorianMonth
+     * @param int $gregorianDay
      * @return array
      */
-    public static function getJalali($g_y, $g_m, $g_d)
+    public static function GregorianToJalali(int $gregorianYear, int $gregorianMonth, int $gregorianDay): array
     {
-        $gy = $g_y - 1600;
-        $gm = $g_m - 1;
-        $g_day_no = (365 * $gy + intval(($gy + 3) / 4) - intval(($gy + 99) / 100) + intval(($gy + 399) / 400));
-        for ($i = 0; $i < $gm; ++$i) {
-            $g_day_no += static::$daysMonthGregorian[$i];
+        $gregorianYear = $gregorianYear - 1600;
+        $gregorianMonth = $gregorianMonth - 1;
+        $gregorianDayNumber = (365 * $gregorianYear + ((int)(($gregorianYear + 3) / 4)) - ((int)(($gregorianYear + 99) / 100)) + ((int)(($gregorianYear + 399) / 400)));
+        for ($i = 0; $i < $gregorianMonth; ++$i) {
+            $gregorianDayNumber += static::$daysMonthGregorian[$i];
         }
-        if ($gm > 1 && (($gy % 4 == 0 && $gy % 100 != 0) || ($gy % 400 == 0))) {
+        if ($gregorianMonth > 1 && (($gregorianYear % 4 == 0 && $gregorianYear % 100 != 0) || ($gregorianYear % 400 == 0))) {
             # leap and after Feb
-            $g_day_no++;
+            $gregorianDayNumber++;
         }
-        $g_day_no += $g_d - 1;
-        $j_day_no = $g_day_no - 79;
-        $j_np = intval($j_day_no / 12053); # 12053 = (365 * 33 + 32 / 4)
-        $j_day_no = $j_day_no % 12053;
-        $jy = (979 + 33 * $j_np + 4 * intval($j_day_no / 1461)); # 1461 = (365 * 4 + 4 / 4)
-        $j_day_no %= 1461;
-        if ($j_day_no >= 366) {
-            $jy += intval(($j_day_no - 1) / 365);
-            $j_day_no = ($j_day_no - 1) % 365;
+        $gregorianDayNumber += $gregorianDay - 1;
+        $jalaliDay = $gregorianDayNumber - 79;
+        $jalaliNumber = (int)($jalaliDay / 12053);
+        $jalaliDay = $jalaliDay % 12053;
+        $jalaliYear = (979 + 33 * $jalaliNumber + 4 * ((int)($jalaliDay / 1461)));
+        $jalaliDay %= 1461;
+        if ($jalaliDay >= 366) {
+            $jalaliYear += ((int)(($jalaliDay - 1) / 365));
+            $jalaliDay = ($jalaliDay - 1) % 365;
         }
-        for ($i = 0; ($i < 11 && $j_day_no >= static::$daysMonthJalali[$i]); ++$i) {
-            $j_day_no -= static::$daysMonthJalali[$i];
+        for ($i = 0; ($i < 11 && $jalaliDay >= static::$daysMonthJalali[$i]); ++$i) {
+            $jalaliDay -= static::$daysMonthJalali[$i];
         }
 
-        return [$jy, $i + 1, $j_day_no + 1];
+        return [$jalaliYear, $i + 1, $jalaliDay + 1];
     }
 
     /**
-     * jalali to gregorian convertion
+     * convert jalali to gregorian
      *
-     * @param int $j_y
-     * @param int $j_m
-     * @param int $j_d
+     * @param int $jalaliYear
+     * @param int $jalaliMonth
+     * @param int $jalaliDay
      * @return array
      */
-    public static function getGregorian($j_y, $j_m, $j_d)
+    public static function jalaliToGregorian(int $jalaliYear, int $jalaliMonth, int $jalaliDay): array
     {
-        $jy = $j_y - 979;
-        $jm = $j_m - 1;
-        $j_day_no = (365 * $jy + intval($jy / 33) * 8 + intval(($jy % 33 + 3) / 4));
-        for ($i = 0; $i < $jm; ++$i) {
-            $j_day_no += static::$daysMonthJalali[$i];
+        $jalaliYear = $jalaliYear - 979;
+        $jalaliMonth = $jalaliMonth - 1;
+        $jalaliDayNumber = (365 * $jalaliYear + ((int)($jalaliYear / 33)) * 8 + ((int)(($jalaliYear % 33 + 3) / 4)));
+        for ($index = 0; $index < $jalaliMonth; ++$index) {
+            $jalaliDayNumber += static::$daysMonthJalali[$index];
         }
-        $j_day_no += $j_d - 1;
-        $g_day_no = $j_day_no + 79;
-        $gy = (1600 + 400 * intval($g_day_no / 146097)); # 146097 = (365 * 400 + 400 / 4 - 400 / 100 + 400 / 400)
-        $g_day_no = $g_day_no % 146097;
+        $jalaliDayNumber += $jalaliDay - 1;
+        $gregorianDay = $jalaliDayNumber + 79;
+        $gregorianYear = (1600 + 400 * ((int)($gregorianDay / 146097)));
+        $gregorianDay = $gregorianDay % 146097;
         $leap = 1;
-        if ($g_day_no >= 36525) { # 36525 = (365 * 100 + 100 / 4)
-            $g_day_no--;
-            $gy += (100 * intval($g_day_no / 36524)); # 36524 = (365 * 100 + 100 / 4 - 100 / 100)
-            $g_day_no = $g_day_no % 36524;
-            if ($g_day_no >= 365) {
-                $g_day_no++;
+        if ($gregorianDay >= 36525) { # 36525 = (365 * 100 + 100 / 4)
+            $gregorianDay--;
+            $gregorianYear += (100 * ((int)($gregorianDay / 36524)));
+            $gregorianDay = $gregorianDay % 36524;
+            if ($gregorianDay >= 365) {
+                $gregorianDay++;
             } else {
                 $leap = 0;
             }
         }
-        $gy += (4 * intval($g_day_no / 1461)); # 1461 = (365 * 4 + 4 / 4)
-        $g_day_no %= 1461;
-        if ($g_day_no >= 366) {
+        $gregorianYear += (4 * ((int)($gregorianDay / 1461)));
+        $gregorianDay %= 1461;
+        if ($gregorianDay >= 366) {
             $leap = 0;
-            $g_day_no--;
-            $gy += intval($g_day_no / 365);
-            $g_day_no = ($g_day_no % 365);
+            $gregorianDay--;
+            $gregorianYear += ((int)($gregorianDay / 365));
+            $gregorianDay = ($gregorianDay % 365);
         }
-        for ($i = 0; $g_day_no >= (static::$daysMonthGregorian[$i] + ($i == 1 && $leap)); $i++) {
-            $g_day_no -= (static::$daysMonthGregorian[$i] + ($i == 1 && $leap));
+        for ($gregorianMonth = 0; $gregorianDay >= (static::$daysMonthGregorian[$gregorianMonth] + ($gregorianMonth == 1 && $leap)); $gregorianMonth++) {
+            $gregorianDay -= (static::$daysMonthGregorian[$gregorianMonth] + ($gregorianMonth == 1 && $leap));
         }
 
-        return [$gy, $i + 1, $g_day_no + 1];
+        return [$gregorianYear, $gregorianMonth + 1, $gregorianDay + 1];
+    }
+
+    /**
+     * Create a DateTime instance from Jalali
+     *
+     * @return DateTime $datetime
+     * @throws Exception
+     */
+    public function datetime(): DateTime
+    {
+        return new DateTime("@{$this->getTimestamp()}", self::createTimeZone());
     }
 }

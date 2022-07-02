@@ -9,13 +9,13 @@ class FormatTest extends TestCase
 {
     public function testSetFormat()
     {
-        Jalali::setStringFormat('Y-m-d-H-i-s');
+        Jalali::setFormat('Y-m-d-H-i-s');
         $datetime = (string) Jalali::parse('1398-10-10 22:30:50');
 
         $this->assertEquals('1398-10-10-22-30-50', $datetime);
 
 
-        Jalali::resetStringFormat();
+        Jalali::resetFormat();
         $datetime = (string) Jalali::parse('1398-10-10 22:30:50');
 
         $this->assertEquals('1398-10-10 22:30:50', $datetime);
@@ -120,8 +120,9 @@ class FormatTest extends TestCase
 
     public function testFormatQuarter()
     {
-        $datetime = Jalali::parse('1398-10-10 21:30:50')->formatWord('q');
+        $datetime = Jalali::parse('1398-10-10 21:30:50');
 
-        $this->assertEquals('زمستان', $datetime);
+        $this->assertEquals('زمستان', $datetime->format('Q'));
+        $this->assertEquals(4, $datetime->format('q'));
     }
 }

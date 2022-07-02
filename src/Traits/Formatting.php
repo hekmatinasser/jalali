@@ -2,18 +2,18 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
+use Exception;
 use Hekmatinasser\Jalali\Jalali;
 use Hekmatinasser\Notowo\Notowo;
-use ReturnTypeWillChange;
 
 trait Formatting
 {
     /**
      * Reset the format used to the default when type juggling a Jalali instance to a string
      */
-    public static function resetStringFormat()
+    public static function resetFormat()
     {
-        static::setStringFormat(static::DEFAULT_STRING_FORMAT);
+        static::setFormat(static::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -21,7 +21,7 @@ trait Formatting
      *
      * @param string $format
      */
-    public static function setStringFormat($format)
+    public static function setFormat(string $format)
     {
         static::$stringFormat = $format;
     }
@@ -40,237 +40,103 @@ trait Formatting
      * The format of the outputted date string (jalali equivalent of php date() function)
      *
      * @param string $format for example 'Y-m-d H:i:s'
+     * @param bool $numberToWord
      * @return string
      */
-    protected function date(string $format): string
+    protected function date(string $format, bool $numberToWord = false): string
     {
-        $timestamp = $this->getTimestamp();
+        list($gregorianYear, $gregorianMonth, $gregorianDay, $gregorainWeek) = explode('-', parent::format('Y-m-d-w'));
+        list($jalaliYear, $jalaliMonth, $jalaliDay) = static::GregorianToJalali($gregorianYear, $gregorianMonth, $gregorianDay);
 
-        list($gYear, $gMonth, $gDay, $gWeek) = explode('-', parent::format('Y-m-d-w'));
-        list($pYear, $pMonth, $pDay) = static::getJalali($gYear, $gMonth, $gDay);
+        $jalaliWeek = (int) $gregorainWeek + 1;
 
-        $pWeek = $gWeek + 1;
-
-        if ($pWeek >= 7) {
-            $pWeek = 0;
+        if ($jalaliWeek >= 7) {
+            $jalaliWeek = 0;
         }
 
-        $lengh = strlen($format);
-        $index = 0;
         $result = '';
-
-        while ($index < $lengh) {
-            $char = $format[$index];
-            if ($char == '\\') {
-                $result .= $format[++$index];
-                $index++;
-
-                continue;
+        $timestamp = $this->getTimestamp();
+        $chars = str_split($format);
+        foreach ($chars as $char) {
+            if($char != '\\') {
+                $output = $this->characterFormat($char, $timestamp, $jalaliYear, $jalaliMonth, $jalaliDay, $jalaliWeek);
+                if ($numberToWord && is_numeric($output)) {
+                    $output = (string) new Notowo($output, static::getLocale());
+                }
+                $result .= $output;
             }
-            $result .= $this->characterFormat($char, $timestamp, $pYear, $pMonth, $pDay, $pWeek);
-
-            $index++;
         }
 
         return $result;
     }
 
     /**
-     * The format of the outputted date charactre (jalali equivalent of php date() function)
+     * The format of the outputted date character (jalali equivalent of php date() function)
      *
      * @param string $char
      * @param int $timestamp
-     * @param int $pYear
-     * @param int $pMonth
-     * @param int $pDay
-     * @param int $pWeek
-     * @return string
-     */
-    private function characterFormat($char, $timestamp, $pYear, $pMonth, $pDay, $pWeek)
-    {
-        switch ($char) {
-            # Day
-            case 'd':
-                return sprintf('%02s', $pDay);
-
-            case 'D':
-                return substr(self::$messages['weekdays'][$pWeek + 1], 0, 2);
-
-            case 'j':
-                return $pDay;
-
-            case 'l':
-                return self::$messages['weekdays'][$pWeek + 1];
-
-            case 'N':
-                return $pWeek + 1;
-
-            case 'w':
-                return $pWeek;
-
-            case 'z':
-                return $this->daysYear($pMonth, $pDay);
-
-            case 'S':
-                return static::$messages['phrase']['th'];
-
-            # Week
-            case 'W':
-                return $this->dayOfWeek();
-
-            # Month
-            case 'F':
-                return self::$messages['year_months'][$pMonth];
-
-            case 'm':
-                return sprintf('%02s', $pMonth);
-
-            case 'M':
-                return substr(self::$messages['year_months'][$pMonth], 0, 6);
-
-            case 'n':
-                return $pMonth;
-
-            case 't':
-                return static::isLeapYear($pYear) && ($pMonth == 12) ? 30 : static::$daysMonthJalali[ intval($pMonth) - 1 ];
-            # Quarter
-            case 'Q':
-            case 'q':
-                return self::$messages['quarters'][$this->quarter];
-            # Years
-            case 'L':
-                return intval($this->isLeapYear($pYear));
-
-            case 'Y':
-            case 'o':
-                return $pYear;
-
-            case 'y':
-                return substr($pYear, 2);
-
-            # Time
-            case 'a':
-                return static::$messages['phrase'][parent::format('a')];
-
-            case 'A':
-                return static::$messages['pharse'][parent::format('a') == 'am' ? 'ante_meridiem' : 'post_meridiem'];
-
-            case 'B':
-            case 'g':
-            case 'G':
-            case 'h':
-            case 'H':
-            case 's':
-            case 'u':
-            case 'i':
-                # Timezone
-            case 'e':
-            case 'I':
-            case 'O':
-            case 'P':
-            case 'T':
-            case 'Z':
-                return parent::format($char);
-
-            # Full Date/Time
-            case 'c':
-                return ($pYear . '-' . $pMonth . '-' . $pDay . ' ' . parent::format('H:i:s P'));
-
-            case 'r':
-                return (substr(self::$messages['weekdays'][$pWeek], 0, 2) . '، ' . $pDay . ' ' . substr(self::$messages['year_months'][$pMonth], 0, 6) . ' ' . $pYear . ' ' . parent::format('H:i:s P'));
-
-            case 'U':
-                return $timestamp;
-
-            default:
-                return $char;
-        }
-    }
-
-    /**
-     * The format of the outputted date string (jalali equivalent of php date() function)
-     *
-     * @param string $format for example 'Y-m-d H:i:s'
-     * @return string
-     */
-    protected function dateWord($format)
-    {
-        $timestamp = $this->getTimestamp();
-
-        list($gYear, $gMonth, $gDay, $gWeek) = explode('-', parent::format('Y-m-d-w'));
-        list($pYear, $pMonth, $pDay) = static::getJalali($gYear, $gMonth, $gDay);
-
-        $pWeek = $gWeek + 1;
-
-        if ($pWeek >= 7) {
-            $pWeek = 0;
-        }
-
-        $lengh = strlen($format);
-        $index = 0;
-        $result = '';
-
-        while ($index < $lengh) {
-            $char = $format[$index];
-            if ($char == '\\') {
-                $result .= $format[++$index];
-                $index++;
-
-                continue;
-            }
-            $output = $this->characterFormat($char, $timestamp, $pYear, $pMonth, $pDay, $pWeek);
-            if (is_numeric($output)) {
-                $output = (string) new Notowo($output, static::getLocale() == 'en' ? 'en' : 'fa');
-            }
-            $result .= $output;
-
-            $index++;
-        }
-
-        return $result;
-    }
-
-    /**
-     * return day number from first day of year
-     *
+     * @param int $year
      * @param int $month
      * @param int $day
-     * @return type
-     * @since 5.0.0
+     * @param int $week
+     * @return int|string
      */
-    protected function daysYear($month, $day)
+    private function characterFormat(string $char, int $timestamp, int $year, int $month, int $day, int $week): int|string
     {
-        $days = 0;
-        for ($i = 1; $i < $month; $i++) {
-            $days += static::$daysMonthJalali[$i - 1];
-        }
-
-        return ($days + $day);
+        return match ($char) {
+            '-' => '-',
+            ':' => ':',
+            '/' => '/',
+            ' ' => ' ',
+            'd' => sprintf('%02s', $day),
+            'D' => substr(self::$messages['weekdays'][$week + 1], 0, 1),
+            'j' => $day,
+            'l' => self::$messages['weekdays'][$week + 1],
+            'N' => $week + 1,
+            'w' => $week,
+            'z' => array_sum(array_slice(static::$daysMonthJalali, 0 , $month - 1)) + $day,
+            'S' => static::$messages['phrase']['th'],
+            'W' => $this->dayOfWeek(),
+            'F' => self::$messages['year_months'][$month],
+            'm' => sprintf('%02s', $month),
+            'M' => substr(self::$messages['year_months'][$month], 0 , 3),
+            'n' => $month,
+            't' => static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1],
+            'q' => (int) ceil($this->month / static::MONTHS_PER_QUARTER),
+            'Q' => self::$messages['quarters'][(int) ceil($this->month / static::MONTHS_PER_QUARTER)],
+            'L' => (int) $this->isLeapYear($year),
+            'Y', 'o' => $year,
+            'y' => substr($year, 2),
+            'a' => static::$messages['phrase'][parent::format('a')],
+            'A' => static::$messages['phrase'][parent::format('a') == 'am' ? 'ante_meridiem' : 'post_meridiem'],
+            'B', 'g', 'G', 'h', 'H', 's', 'u', 'i', 'e', 'I', 'O', 'P', 'T', 'Z' => parent::format($char),
+            'c' => ("$year-$month-$day " . parent::format('H:i:s P')),
+            'r' => (substr(self::$messages['weekdays'][$week], 0, 1) . "، $day " . self::$messages['year_months'][$month] . " $year " . parent::format('H:i:s P')),
+            'U' => $timestamp,
+            default => $char,
+        };
     }
 
     /**
      * return week number from first of year
      *
-     * @param int $month
-     * @param int $day
-     * @return type
-     * @since 5.0.0
+     * @return int
      */
-    protected function dayOfWeek()
+    protected function dayOfWeek(): int
     {
-        $offset = $this->clone()->startYear()->format('w');
-        $days = $this->format('z');
+        $offset = (int) $this->clone()->startYear()->format('w');
+        $days = (int) $this->format('z');
 
-        return ceil(($days + $offset) / 7);
+        return ceil(($days + $offset) / self::DAYS_PER_WEEK);
     }
 
     /**
      * The format of the outputted date string (jalali equivalent of php strftime() function)
      *
-     * @param $format
+     * @param string $format
      * @return string
      */
-    protected function strftime($format)
+    protected function strftime(string $format): string
     {
         $strftime_date = [
             "%a" => "D",
@@ -326,8 +192,7 @@ trait Formatting
      * @param string $format
      * @return string
      */
-    #[ReturnTypeWillChange]
-    public function format($format)
+    public function format(string $format): string
     {
         return $this->date($this->strftime($format));
     }
@@ -337,6 +202,7 @@ trait Formatting
      *
      * @param string $format
      * @return string
+     * @throws Exception
      */
     public function formatGregorian(string $format): string
     {
@@ -358,7 +224,7 @@ trait Formatting
      *
      * @return string
      */
-    public function formatDate()
+    public function formatDate(): string
     {
         return $this->format('Y-m-d');
     }
@@ -368,7 +234,7 @@ trait Formatting
      *
      * @return string
      */
-    public function formatTime()
+    public function formatTime(): string
     {
         return $this->format('H:i:s');
     }
@@ -378,7 +244,7 @@ trait Formatting
      *
      * @return string
      */
-    public function formatJalaliDatetime()
+    public function formatJalaliDatetime(): string
     {
         return $this->format('Y/n/j H:i:s');
     }
@@ -388,7 +254,7 @@ trait Formatting
      *
      * @return string
      */
-    public function formatJalaliDate()
+    public function formatJalaliDate(): string
     {
         return $this->format('Y/n/j');
     }
@@ -396,11 +262,11 @@ trait Formatting
     /**
      * get difference in all
      *
-     * @param Jalali|null $v
+     * @param Jalali|null $datetime
      *
      * @return string
      */
-    public function formatDifference(Jalali $v = null)
+    public function formatDifference(Jalali $datetime = null): string
     {
         $units = [
             static::SECONDS_PER_MINUTE,
@@ -412,7 +278,7 @@ trait Formatting
             static::YEARS_PER_DECADE,
             static::DECADE_PER_CENTURY,
         ];
-        $difference = $this->diffSeconds($v);
+        $difference = $this->diffSeconds($datetime);
         $absolute = static::$messages['phrase'][$difference < 0 ? 'later' : 'ago'];
 
         $difference = abs($difference);
@@ -429,9 +295,13 @@ trait Formatting
         return sprintf('%s %s %s', $difference, array_values(static::$messages['date_units'])[$unit], $absolute);
     }
 
-    public function formatWord($format)
+    /**
+     * @param string $format
+     * @return string
+     */
+    public function formatWord(string $format): string
     {
-        return $this->dateWord($this->strftime($format));
+        return $this->date($this->strftime($format), true);
     }
 
     /**
@@ -440,7 +310,7 @@ trait Formatting
      * @param string $string
      * @return string
      */
-    public static function enToFaNumbers($string)
+    public static function enToFaNumbers(string $string): string
     {
         $en = static::getMessages('en');
         $fa = static::getMessages('fa');
@@ -454,7 +324,7 @@ trait Formatting
      * @param string $string
      * @return string
      */
-    public static function faToEnNumbers($string)
+    public static function faToEnNumbers(string $string): string
     {
         $fa = static::getMessages('fa');
         $en = static::getMessages('en');
@@ -468,7 +338,7 @@ trait Formatting
      * @param string $string
      * @return string
      */
-    public static function arToEnNumbers($string)
+    public static function arToEnNumbers(string $string): string
     {
         $ar = static::getMessages('ar');
         $en = static::getMessages('en');

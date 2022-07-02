@@ -12,7 +12,7 @@ trait Modification
      *
      * @return static
      */
-    public function addYears($value)
+    public function addYears(int $value = 1): static
     {
         return $this->year($this->year + $value);
     }
@@ -20,13 +20,11 @@ trait Modification
     /**
      * Add a year to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addYear($value = 1)
+    public function addYear(): static
     {
-        return $this->addYears($value);
+        return $this->addYears();
     }
 
     /**
@@ -36,7 +34,7 @@ trait Modification
      *
      * @return static
      */
-    public function subYears($value)
+    public function subYears(int $value): static
     {
         return $this->addYears(-1 * $value);
     }
@@ -48,7 +46,7 @@ trait Modification
      *
      * @return static
      */
-    public function subYear($value = 1)
+    public function subYear(int $value = 1): static
     {
         return $this->subYears($value);
     }
@@ -61,15 +59,15 @@ trait Modification
      *
      * @return static
      */
-    public function addMonths($value)
+    public function addMonths(int $value = 1): static
     {
         list($year, $month, $day, $hour, $minute, $second) = explode('-', $this->format('Y-m-d-H-i-s'));
         $month += $value;
         if ($month > 12) {
-            $year += intval($month / 12);
+            $year += (int) ($month / 12);
             $month = $month % 12;
         } elseif ($month < 1) {
-            $year += intval($month / 12) - 1;
+            $year += (int) ($month / 12) - 1;
             $month = 12 + ($month % 12);
         }
         if ($month == 0) {
@@ -90,25 +88,21 @@ trait Modification
     /**
      * Add a month to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addMonth($value = 1)
+    public function addMonth(): static
     {
-        return $this->addMonths($value);
+        return $this->addMonths();
     }
 
     /**
      * Remove a month from the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function subMonth($value = 1)
+    public function subMonth(): static
     {
-        return $this->subMonths($value);
+        return $this->subMonths();
     }
 
     /**
@@ -118,7 +112,7 @@ trait Modification
      *
      * @return static
      */
-    public function subMonths($value)
+    public function subMonths(int $value = 1): static
     {
         return $this->addMonths(-1 * $value);
     }
@@ -131,33 +125,29 @@ trait Modification
      *
      * @return static
      */
-    public function addDays($value)
+    public function addDays(int $value = 1): static
     {
-        return $this->modify((int) $value.' day');
+        return $this->modify("$value day");
     }
 
     /**
      * Add a day to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addDay($value = 1)
+    public function addDay(): static
     {
-        return $this->addDays($value);
+        return $this->addDays();
     }
 
     /**
      * Remove a day from the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function subDay($value = 1)
+    public function subDay(): static
     {
-        return $this->subDays($value);
+        return $this->subDays();
     }
 
     /**
@@ -167,7 +157,7 @@ trait Modification
      *
      * @return static
      */
-    public function subDays($value)
+    public function subDays(int $value = 1): static
     {
         return $this->addDays(-1 * $value);
     }
@@ -180,33 +170,28 @@ trait Modification
      *
      * @return static
      */
-    public function addWeeks($value)
+    public function addWeeks(int $value = 1): static
     {
-        return $this->modify((int) $value.' week');
+        return $this->modify("$value week");
     }
 
     /**
      * Add a week to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addWeek($value = 1)
+    public function addWeek(): static
     {
-        return $this->addWeeks($value);
+        return $this->addWeeks();
     }
 
     /**
      * Remove a week from the instance
-     *
-     * @param int $value
-     *
      * @return static
      */
-    public function subWeek($value = 1)
+    public function subWeek(): static
     {
-        return $this->subWeeks($value);
+        return $this->subWeeks();
     }
 
     /**
@@ -216,7 +201,7 @@ trait Modification
      *
      * @return static
      */
-    public function subWeeks($value)
+    public function subWeeks(int $value = 1): static
     {
         return $this->addWeeks(-1 * $value);
     }
@@ -229,33 +214,29 @@ trait Modification
      *
      * @return static
      */
-    public function addHours($value)
+    public function addHours(int $value = 1): static
     {
-        return $this->modify((int) $value.' hour');
+        return $this->modify("$value hour");
     }
 
     /**
      * Add an hour to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addHour($value = 1)
+    public function addHour(): static
     {
-        return $this->addHours($value);
+        return $this->addHours();
     }
 
     /**
      * Remove an hour from the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function subHour($value = 1)
+    public function subHour(): static
     {
-        return $this->subHours($value);
+        return $this->subHours();
     }
 
     /**
@@ -265,7 +246,7 @@ trait Modification
      *
      * @return static
      */
-    public function subHours($value)
+    public function subHours(int $value = 1): static
     {
         return $this->addHours(-1 * $value);
     }
@@ -278,33 +259,29 @@ trait Modification
      *
      * @return static
      */
-    public function addMinutes($value)
+    public function addMinutes(int $value = 1): static
     {
-        return $this->modify((int) $value.' minute');
+        return $this->modify("$value minute");
     }
 
     /**
      * Add a minute to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addMinute($value = 1)
+    public function addMinute(): static
     {
-        return $this->addMinutes($value);
+        return $this->addMinutes();
     }
 
     /**
      * Remove a minute from the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function subMinute($value = 1)
+    public function subMinute(): static
     {
-        return $this->subMinutes($value);
+        return $this->subMinutes();
     }
 
     /**
@@ -314,7 +291,7 @@ trait Modification
      *
      * @return static
      */
-    public function subMinutes($value)
+    public function subMinutes(int $value = 1): static
     {
         return $this->addMinutes(-1 * $value);
     }
@@ -327,33 +304,29 @@ trait Modification
      *
      * @return static
      */
-    public function addSeconds($value)
+    public function addSeconds(int $value= 1): static
     {
-        return $this->modify((int) $value.' second');
+        return $this->modify("$value second");
     }
 
     /**
      * Add a second to the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function addSecond($value = 1)
+    public function addSecond(): static
     {
-        return $this->addSeconds($value);
+        return $this->addSeconds();
     }
 
     /**
      * Remove a second from the instance
      *
-     * @param int $value
-     *
      * @return static
      */
-    public function subSecond($value = 1)
+    public function subSecond(): static
     {
-        return $this->subSeconds($value);
+        return $this->subSeconds();
     }
 
     /**
@@ -363,7 +336,7 @@ trait Modification
      *
      * @return static
      */
-    public function subSeconds($value)
+    public function subSeconds(int $value = 1): static
     {
         return $this->addSeconds(-1 * $value);
     }

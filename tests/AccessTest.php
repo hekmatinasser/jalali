@@ -29,7 +29,7 @@ class AccessTest extends TestCase
 
     public function testSetProperty()
     {
-        $datetime = new Jalali('2019-01-01 17:20:35', 'Asia/Tehran');
+        $datetime = Jalali::parse('1399-01-01 17:20:35', 'Asia/Tehran');
 
         $datetime->year = 1398;
         $this->assertEquals(1398, $datetime->year);
@@ -52,7 +52,7 @@ class AccessTest extends TestCase
         $datetime->timestamp = 1546382684;
         $this->assertEquals(1546382684, $datetime->timestamp);
 
-        $datetime->tz = 'UTC';
+        $datetime->timezone = 'UTC';
         $this->assertEquals('UTC', $datetime->timezone);
     }
 

@@ -2,6 +2,7 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
+use Exception;
 use Hekmatinasser\Jalali\Jalali;
 
 trait Difference
@@ -9,92 +10,87 @@ trait Difference
     /**
      * Get the difference in years
      *
-     * @param Jalali|null $v
-     *
+     * @param Jalali|null $datetime
      * @return int
+     * @throws Exception
      */
-    public function diffYears(Jalali $v = null)
+    public function diffYears(Jalali $datetime = null): int
     {
-        $v = $v ?: static::now($this->getTimezone());
-
-        return (int) $this->diff($v->datetime())->format('%r%y');
+        $datetime = $datetime ?: new self();
+        return (int) $this->diff($datetime->datetime())->format('%r%y');
     }
 
     /**
      * Get the difference in months
      *
-     * @param Jalali|null $v
-     *
+     * @param Jalali|null $datetime
      * @return int
+     * @throws Exception
      */
-    public function diffMonths(Jalali $v = null)
+    public function diffMonths(Jalali $datetime = null): int
     {
-        $v = $v ?: static::now($this->getTimezone());
-
-        return $this->diffYears($v) * static::MONTHS_PER_YEAR + (int) $this->diff($v->datetime())->format('%r%m');
+        $datetime = $datetime ?: new self();
+        return $this->diffYears($datetime) * static::MONTHS_PER_YEAR + (int) $this->diff($datetime->datetime())->format('%r%m');
     }
 
     /**
      * Get the difference in weeks
      *
-     * @param Jalali|null $v
-     *
+     * @param Jalali|null $datetime
      * @return int
+     * @throws Exception
      */
-    public function diffWeeks(Jalali $v = null)
+    public function diffWeeks(Jalali $datetime = null): int
     {
-        return (int) ($this->diffDays($v) / static::DAYS_PER_WEEK);
+        return (int) ($this->diffDays($datetime) / static::DAYS_PER_WEEK);
     }
 
     /**
      * Get the difference in days
      *
-     * @param Jalali|null $v
-     *
+     * @param Jalali|null $datetime
      * @return int
+     * @throws Exception
      */
-    public function diffDays(Jalali $v = null)
+    public function diffDays(Jalali $datetime = null): int
     {
-        $v = $v ?: static::now($this->getTimezone());
-
-        return (int) $this->diff($v->datetime())->format('%r%a');
+        $datetime = $datetime ?: new self();
+        return (int) $this->diff($datetime->datetime())->format('%r%a');
     }
 
     /**
      * Get the difference in hours
      *
-     * @param Jalali|null $v
-     *
+     * @param Jalali|null $datetime
      * @return int
      */
-    public function diffHours(Jalali $v = null)
+    public function diffHours(Jalali $datetime = null): int
     {
-        return (int) ($this->diffSeconds($v) / static::SECONDS_PER_MINUTE / static::MINUTES_PER_HOUR);
+        return (int) ($this->diffSeconds($datetime) / static::SECONDS_PER_MINUTE / static::MINUTES_PER_HOUR);
     }
 
     /**
      * Get the difference in minutes
      *
-     * @param Jalali|null $v
-     *
+     * @param Jalali|null $datetime
      * @return int
      */
-    public function diffMinutes(Jalali $v = null)
+    public function diffMinutes(Jalali $datetime = null): int
     {
-        return (int) ($this->diffSeconds($v) / static::SECONDS_PER_MINUTE);
+        return (int) ($this->diffSeconds($datetime) / static::SECONDS_PER_MINUTE);
     }
 
     /**
      * Get the difference in seconds
      *
-     * @param Jalali|null $v
+     * @param Jalali|null $datetime
      *
      * @return int
      */
-    public function diffSeconds(Jalali $v = null)
+    public function diffSeconds(Jalali $datetime = null): int
     {
-        $v = $v ?: static::now($this->getTimezone());
+        $datetime = $datetime ?: static::now($this->getTimezone());
 
-        return $v->getTimestamp() - $this->getTimestamp();
+        return $datetime->getTimestamp() - $this->getTimestamp();
     }
 }
