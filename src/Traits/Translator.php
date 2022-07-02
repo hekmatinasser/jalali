@@ -62,8 +62,10 @@ trait Translator
     {
         if ($messages = static::getMessages($locale)) {
             static::$messages = $messages;
+
             return true;
         }
+
         return false;
     }
 
@@ -80,6 +82,7 @@ trait Translator
         if ($data !== false) {
             return $data;
         }
+
         return false;
     }
 

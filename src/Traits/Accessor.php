@@ -35,8 +35,7 @@ trait Accessor
 
         if (array_key_exists($name, $formats)) {
             return (int) $this->format($formats[$name]);
-        }
-        elseif ($name === 'timezone') {
+        } elseif ($name === 'timezone') {
             return $this->getTimezone()->getName();
         }
 
@@ -53,6 +52,7 @@ trait Accessor
     {
         try {
             $this->__get($name);
+
             return true;
         } catch (InvalidArgumentException) {
             return false;
@@ -68,13 +68,14 @@ trait Accessor
      */
     public function __set(string $name, int|DateTimeZone|string $value)
     {
-       switch ($name) {
+        switch ($name) {
             case 'year':
             case 'month':
             case 'day':
                 list($year, $month, $day) = explode('-', $this->format('Y-n-j'));
                 $$name = $value;
                 $this->setDateJalali($year, $month, $day);
+
                 break;
             case 'hour':
             case 'minute':
@@ -83,14 +84,17 @@ trait Accessor
                 list($hour, $minute, $second, $micro) = explode('-', $this->format('G-i-s-u'));
                 $$name = $value;
                 $this->setTime($hour, $minute, $second, $micro);
+
                 break;
 
             case 'timestamp':
                 $this->timestamp($value);
+
                 break;
 
             case 'timezone':
                 $this->timezone(self::createTimeZone($value));
+
                 break;
 
             default:
@@ -107,6 +111,7 @@ trait Accessor
     public function year(int $value): static
     {
         $this->year = $value;
+
         return $this;
     }
 
@@ -119,6 +124,7 @@ trait Accessor
     public function month(int $value): static
     {
         $this->month = $value;
+
         return $this;
     }
 
@@ -131,6 +137,7 @@ trait Accessor
     public function day(int $value): static
     {
         $this->day = $value;
+
         return $this;
     }
 
@@ -143,6 +150,7 @@ trait Accessor
     public function hour(int $value): static
     {
         $this->hour = $value;
+
         return $this;
     }
 
@@ -155,6 +163,7 @@ trait Accessor
     public function minute(int $value): static
     {
         $this->minute = $value;
+
         return $this;
     }
 
@@ -167,6 +176,7 @@ trait Accessor
     public function second(int $value): static
     {
         $this->second = $value;
+
         return $this;
     }
 
@@ -179,6 +189,7 @@ trait Accessor
     public function micro(int $value): static
     {
         $this->micro = $value;
+
         return $this;
     }
 
@@ -191,6 +202,7 @@ trait Accessor
     public function timestamp(int $value): static
     {
         $this->setTimestamp($value);
+
         return $this;
     }
 
@@ -203,6 +215,7 @@ trait Accessor
     public function timezone(DateTimeZone|string $value): static
     {
         $this->setTimezone(static::createTimeZone($value));
+
         return $this;
     }
 
@@ -235,6 +248,7 @@ trait Accessor
     {
         list($year, $month, $day) = self::jalaliToGregorian($year, $month, $day);
         $this->setDate($year, $month, $day);
+
         return $this;
     }
 
@@ -257,6 +271,7 @@ trait Accessor
         self::validTime($hour, $minute, $second, $micro);
 
         $this->setTime($hour, $minute, $second, $micro);
+
         return $this;
     }
 }

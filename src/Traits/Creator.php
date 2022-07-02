@@ -135,8 +135,12 @@ trait Creator
     public static function parse($datetime, DateTimeZone|string $timezone = null): static
     {
         self::loadMessages();
-        $names = array_map(function ($value) { return " $value "; }, array_values(self::$messages['year_months']));
-        $values = array_map(function ($value) { return "-$value-"; }, range(1, 12));
+        $names = array_map(function ($value) {
+            return " $value ";
+        }, array_values(self::$messages['year_months']));
+        $values = array_map(function ($value) {
+            return "-$value-";
+        }, range(1, 12));
         $formatted = str_replace($names, $values, $datetime);
 
         $formatted = str_replace(array_values(self::$messages['year_months']), range(1, 12), $formatted);
@@ -200,7 +204,8 @@ trait Creator
      */
     public static function createDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
-        list($hour, $minute, $second) = explode('-', (new DateTime)->format('G-i-s'));
+        list($hour, $minute, $second) = explode('-', (new DateTime())->format('G-i-s'));
+
         return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
@@ -216,7 +221,8 @@ trait Creator
      */
     public static function createTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        list($year, $month, $day) = explode('-', (new DateTime)->format('Y-n-j'));
+        list($year, $month, $day) = explode('-', (new DateTime())->format('Y-n-j'));
+
         return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
@@ -246,6 +252,7 @@ trait Creator
         } elseif ($dataTimeZone = @timezone_open((string) $timezone)) {
             return $dataTimeZone;
         }
+
         throw new UnknownTimezoneException((string) $timezone);
     }
 
@@ -283,7 +290,8 @@ trait Creator
      */
     public static function createGregorianDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
-        list($hour, $minute, $second) = explode('-', (new DateTime)->format('G-i-s'));
+        list($hour, $minute, $second) = explode('-', (new DateTime())->format('G-i-s'));
+
         return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
@@ -299,7 +307,8 @@ trait Creator
      */
     public static function createGregorianTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        list($year, $month, $day) = explode('-', (new DateTime)->format('Y-n-j'));
+        list($year, $month, $day) = explode('-', (new DateTime())->format('Y-n-j'));
+
         return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
@@ -339,6 +348,7 @@ trait Creator
     public static function createJalaliDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
         list($hour, $minute, $second) = explode('-', (new static())->format('G-i-s'));
+
         return static::createJalali($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 
@@ -355,6 +365,7 @@ trait Creator
     public static function createJalaliTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
         list($year, $month, $day) = explode('-', (new static())->format('Y-n-j'));
+
         return static::createJalali($year, $month, $day, $hour, $minute, $second, $timezone);
     }
 }

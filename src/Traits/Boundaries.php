@@ -2,8 +2,6 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
-use Hekmatinasser\Jalali\Jalali;
-
 trait Boundaries
 {
     /**
@@ -77,6 +75,7 @@ trait Boundaries
         if ($diff > 0) {
             $this->subDays($diff);
         }
+
         return $this->startDay();
     }
 
@@ -91,6 +90,7 @@ trait Boundaries
         if ($diff > 0) {
             $this->addDays($diff);
         }
+
         return $this->endDay();
     }
 
@@ -156,6 +156,7 @@ trait Boundaries
     public function endYear(): static
     {
         $year = $this->year;
+
         return $this->setDateTime($year, 12, self::isLeapYear($year) ? 30 : 29, 23, 59, 59, 999999);
     }
 }
