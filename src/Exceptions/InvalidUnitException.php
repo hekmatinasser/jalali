@@ -15,7 +15,7 @@ class InvalidUnitException extends InvalidArgumentException
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct(private $unit, private $value , $code = 0, Throwable $previous = null)
+    public function __construct(private $unit, private $value, $code = 0, Throwable $previous = null)
     {
         parent::__construct("Invalid $this->unit '$value'", $code, $previous);
     }

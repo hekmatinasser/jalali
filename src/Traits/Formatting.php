@@ -58,7 +58,7 @@ trait Formatting
         $timestamp = $this->getTimestamp();
         $chars = str_split($format);
         foreach ($chars as $char) {
-            if($char != '\\') {
+            if ($char != '\\') {
                 $output = $this->characterFormat($char, $timestamp, $jalaliYear, $jalaliMonth, $jalaliDay, $jalaliWeek);
                 if ($numberToWord && is_numeric($output)) {
                     $output = (string) new Notowo($output, static::getLocale());
@@ -94,12 +94,12 @@ trait Formatting
             'l' => self::$messages['weekdays'][$week + 1],
             'N' => $week + 1,
             'w' => $week,
-            'z' => array_sum(array_slice(static::$daysMonthJalali, 0 , $month - 1)) + $day,
+            'z' => array_sum(array_slice(static::$daysMonthJalali, 0, $month - 1)) + $day,
             'S' => static::$messages['phrase']['th'],
             'W' => $this->dayOfWeek(),
             'F' => self::$messages['year_months'][$month],
             'm' => sprintf('%02s', $month),
-            'M' => substr(self::$messages['year_months'][$month], 0 , 3),
+            'M' => substr(self::$messages['year_months'][$month], 0, 3),
             'n' => $month,
             't' => static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1],
             'q' => (int) ceil($this->month / static::MONTHS_PER_QUARTER),

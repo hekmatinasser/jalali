@@ -219,10 +219,11 @@ trait Comparison
      * Determines if the instance is a weekday
      * @return bool
      */
-    #[Pure] public function isWeekday(): bool
-    {
-        return ! $this->isWeekend();
-    }
+    #[Pure]
+ public function isWeekday(): bool
+ {
+     return ! $this->isWeekend();
+ }
 
     /**
      * Determines if the instance is a weekend day

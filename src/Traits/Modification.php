@@ -304,7 +304,7 @@ trait Modification
      *
      * @return static
      */
-    public function addSeconds(int $value= 1): static
+    public function addSeconds(int $value = 1): static
     {
         return $this->modify("$value second");
     }

@@ -26,21 +26,22 @@ trait Validation
      * @param int $year
      * @return bool
      */
-    #[Pure] public static function isValidDate(int $year, int $month, int $day): bool
-    {
-        if ($year < 0) {
-            return false;
-        }
-        if ($month < 1 || $month > 12) {
-            return false;
-        }
-        $dayLastMonthJalali = static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1];
-        if ($day < 1 || $day > $dayLastMonthJalali) {
-            return false;
-        }
+    #[Pure]
+ public static function isValidDate(int $year, int $month, int $day): bool
+ {
+     if ($year < 0) {
+         return false;
+     }
+     if ($month < 1 || $month > 12) {
+         return false;
+     }
+     $dayLastMonthJalali = static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1];
+     if ($day < 1 || $day > $dayLastMonthJalali) {
+         return false;
+     }
 
-        return true;
-    }
+     return true;
+ }
 
     /**
      * validate a time
@@ -58,6 +59,7 @@ trait Validation
             && $second >= 0 && $second <= 59
             && $micro >= 0 && $micro <= 999999;
     }
+
     /**
      * valid year jalali
      *
@@ -65,7 +67,7 @@ trait Validation
      */
     public static function validYear(int $value)
     {
-        if($value < 0) {
+        if ($value < 0) {
             throw new InvalidUnitException('year', $value);
         }
     }
@@ -105,7 +107,7 @@ trait Validation
      */
     public static function validHour(int $value)
     {
-        if($value < 0 || $value > 23) {
+        if ($value < 0 || $value > 23) {
             throw new InvalidUnitException('hour', $value);
         }
     }
@@ -117,7 +119,7 @@ trait Validation
      */
     public static function validMinute(int $value)
     {
-        if($value < 0 || $value > 59) {
+        if ($value < 0 || $value > 59) {
             throw new InvalidUnitException('minute', $value);
         }
     }
@@ -129,7 +131,7 @@ trait Validation
      */
     public static function validSecond(int $value)
     {
-        if($value < 0 || $value > 59) {
+        if ($value < 0 || $value > 59) {
             throw new InvalidUnitException('second', $value);
         }
     }
@@ -141,7 +143,7 @@ trait Validation
      */
     public static function validMicro(int $value)
     {
-        if($value < 0 || $value > 999999) {
+        if ($value < 0 || $value > 999999) {
             throw new InvalidUnitException('micro', $value);
         }
     }
@@ -173,7 +175,9 @@ trait Validation
         self::validHour($hour);
         self::validMinute($minute);
         self::validSecond($second);
-        if($micro) self::validMicro($micro);
+        if ($micro) {
+            self::validMicro($micro);
+        }
     }
 
     /**
@@ -192,6 +196,4 @@ trait Validation
         self::validDate($year, $month, $day);
         self::validTime($hour, $minute, $second, $micro);
     }
-
-
 }

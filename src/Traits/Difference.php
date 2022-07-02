@@ -17,6 +17,7 @@ trait Difference
     public function diffYears(Jalali $datetime = null): int
     {
         $datetime = $datetime ?: new self();
+
         return (int) $this->diff($datetime->datetime())->format('%r%y');
     }
 
@@ -30,6 +31,7 @@ trait Difference
     public function diffMonths(Jalali $datetime = null): int
     {
         $datetime = $datetime ?: new self();
+
         return $this->diffYears($datetime) * static::MONTHS_PER_YEAR + (int) $this->diff($datetime->datetime())->format('%r%m');
     }
 
@@ -55,6 +57,7 @@ trait Difference
     public function diffDays(Jalali $datetime = null): int
     {
         $datetime = $datetime ?: new self();
+
         return (int) $this->diff($datetime->datetime())->format('%r%a');
     }
 
