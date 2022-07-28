@@ -72,7 +72,12 @@ function generateEntity(items) {
             markup += `<h4>Arguments</h4>`;
             markup += `<ul class="arguments">`;
             for(let key in item.arguments) {
-                markup += `<li><span class="type">${item.arguments[key]}</span>: <span>${key}</span></li>`;
+                let argument = item.arguments[key];
+                markup += `<li><span class="type">${argument.type}</span>: <span class="name">${argument.name}</span>`;
+                if(argument.descrption) {
+                    markup += `<p class="description">${argument.descrption}</p>`;
+                }
+                markup += `</li>`;
             }
             markup += `</ul>`
         }
