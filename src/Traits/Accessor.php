@@ -72,7 +72,7 @@ trait Accessor
             $$name = $value;
             $this->setDateJalali($year, $month, $day);
         }
-        elseif (in_array($name, ['hour', 'minute', 'secound', 'micro'])) {
+        elseif (in_array($name, ['hour', 'minute', 'second', 'micro'])) {
             list($hour, $minute, $second, $micro) = explode('-', $this->format('G-i-s-u'));
             $$name = $value;
             $this->setTime($hour, $minute, $second, $micro);

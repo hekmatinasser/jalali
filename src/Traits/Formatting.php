@@ -2,6 +2,7 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
+use DateTime;
 use Exception;
 use Hekmatinasser\Jalali\Jalali;
 use Hekmatinasser\Notowo\Notowo;
@@ -262,11 +263,10 @@ trait Formatting
     /**
      * get difference in all
      *
-     * @param Jalali|null $datetime
-     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return string
      */
-    public function formatDifference(Jalali $datetime = null): string
+    public function formatDifference(Jalali|DateTime|string|int|null $datetime = null): string
     {
         $units = [
             static::SECONDS_PER_MINUTE,
@@ -278,7 +278,7 @@ trait Formatting
             static::YEARS_PER_DECADE,
             static::DECADE_PER_CENTURY,
         ];
-        $difference = $this->diffSeconds($datetime);
+        $difference = $this->diffSeconds(new self($datetime));
         $absolute = static::$messages['phrase'][$difference < 0 ? 'later' : 'ago'];
 
         $difference = abs($difference);

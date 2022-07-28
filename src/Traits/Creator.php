@@ -7,13 +7,14 @@ use DateTimeZone;
 use Exception;
 use Hekmatinasser\Jalali\Exceptions\InvalidDatetimeException;
 use Hekmatinasser\Jalali\Exceptions\UnknownTimezoneException;
+use Hekmatinasser\Jalali\Jalali;
 
 trait Creator
 {
     /**
      * create object of Jalali
      *
-     * @param DateTime|string|int|null $datetime
+     * @param Jalali|DateTime|string|int|null $datetime
      * @param DateTimeZone|string|null $timezone
      */
     public function __construct($datetime = null, $timezone = null)
@@ -36,7 +37,6 @@ trait Creator
             } else {
                 parent::__construct($gregorianDatetime, static::createTimeZone($timezone));
             }
-//            parent::__construct($gregorianDatetime, static::createTimeZone($timezone));
             self::loadMessages();
         } catch (Exception) {
             throw new InvalidDatetimeException($datetime);
