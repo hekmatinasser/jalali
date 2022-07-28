@@ -146,6 +146,7 @@ trait Comparison
         if ($equal) {
             return $this->gte($less) && $this->lte($greater);
         }
+
         return $this->gt($less) && $this->lt($greater);
     }
 
@@ -339,6 +340,7 @@ trait Comparison
     public function isSameAs(string $format, Jalali|DateTime|string|int|null $datetime = null): bool
     {
         $datetime = new self($datetime);
+
         return $this->format($format) === $datetime->format($format);
     }
 
