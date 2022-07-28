@@ -54,7 +54,7 @@ trait Accessor
             $this->__get($name);
 
             return true;
-        } catch (InvalidArgumentException) {
+        } catch (InvalidArgumentException $e) {
             return false;
         }
     }
