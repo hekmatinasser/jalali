@@ -98,6 +98,6 @@ trait Transformation
      */
     public function datetime(): DateTime
     {
-        return new DateTime("@{$this->getTimestamp()}", self::createTimeZone());
+        return new DateTime(date('Y-m-d H:i:s.u', $this->getTimestamp()), $this->getTimezone());
     }
 }
