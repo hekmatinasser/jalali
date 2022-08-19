@@ -52,7 +52,7 @@ trait Creator
      */
     public static function now($timezone = null): static
     {
-        return new self(null, $timezone);
+        return new static(null, $timezone);
     }
 
     /**
