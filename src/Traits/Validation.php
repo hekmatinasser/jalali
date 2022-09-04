@@ -15,7 +15,7 @@ trait Validation
      */
     public static function isLeapYear(int $year): bool
     {
-        return in_array(($year % 33), [1 , 5 , 9 , 13 ,17 , 22 , 26 , 30]);
+        return in_array(($year % 33), [1, 5, 9, 13, 17, 22, 26, 30]);
     }
 
     /**
@@ -27,21 +27,21 @@ trait Validation
      * @return bool
      */
     #[Pure]
- public static function isValidDate(int $year, int $month, int $day): bool
- {
-     if ($year < 0) {
-         return false;
-     }
-     if ($month < 1 || $month > 12) {
-         return false;
-     }
-     $dayLastMonthJalali = static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1];
-     if ($day < 1 || $day > $dayLastMonthJalali) {
-         return false;
-     }
+    public static function isValidDate(int $year, int $month, int $day): bool
+    {
+        if ($year < 0) {
+            return false;
+        }
+        if ($month < 1 || $month > 12) {
+            return false;
+        }
+        $dayLastMonthJalali = static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1];
+        if ($day < 1 || $day > $dayLastMonthJalali) {
+            return false;
+        }
 
-     return true;
- }
+        return true;
+    }
 
     /**
      * validate a time
@@ -64,6 +64,17 @@ trait Validation
      * valid year jalali
      *
      * @param int $value
+     * @return bool
+     */
+    public static function isValidYear(int $value): bool
+    {
+        return $value < 0;
+    }
+
+    /**
+     * valid year jalali
+     *
+     * @param int $value
      */
     public static function validYear(int $value)
     {
@@ -76,10 +87,21 @@ trait Validation
      * valid mount jalali
      *
      * @param int $value
+     * @return bool
+     */
+    public static function isValidMount(int $value): bool
+    {
+        return $value <= 1 || $value >= 12;
+    }
+
+    /**
+     * valid mount jalali
+     *
+     * @param int $value
      */
     public static function validMount(int $value)
     {
-        if ($value < 1 || $value > 12) {
+        if ($value <= 1 || $value >= 12) {
             throw new InvalidUnitException('month', $value);
         }
     }
@@ -90,14 +112,37 @@ trait Validation
      * @param int $year
      * @param int $month
      * @param int $day
-     * @param string $unit
+     * @return bool
      */
-    public static function validDay(int $year, int $month, int $day, string $unit = 'day')
+    public static function isValidDay(int $year, int $month, int $day): bool
+    {
+        return self::isValidDate($year, $month, $day);
+    }
+
+    /**
+     * valid day jalali
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     */
+    public static function validDay(int $year, int $month, int $day)
     {
         $dayLastMonthJalali = (static::isLeapYear($year) && $month == 12) ? 30 : static::$daysMonthJalali[$month - 1];
         if ($day < 1 || $day > $dayLastMonthJalali) {
-            throw new InvalidUnitException($unit, $day);
+            throw new InvalidUnitException('day', $day);
         }
+    }
+
+    /**
+     * valid hour jalali
+     *
+     * @param int $value
+     * @return bool
+     */
+    public static function isValidHour(int $value): bool
+    {
+        return $value < 0 || $value > 23;
     }
 
     /**
@@ -116,6 +161,17 @@ trait Validation
      * valid minute jalali
      *
      * @param int $value
+     * @return bool
+     */
+    public static function isValidMinute(int $value): bool
+    {
+        return $value < 0 || $value > 59;
+    }
+
+    /**
+     * valid minute jalali
+     *
+     * @param int $value
      */
     public static function validMinute(int $value)
     {
@@ -128,12 +184,34 @@ trait Validation
      * valid second jalali
      *
      * @param int $value
+     * @return bool
+     */
+    public static function isValidSecond(int $value): bool
+    {
+        return $value < 0 || $value > 59;
+    }
+
+    /**
+     * valid second jalali
+     *
+     * @param int $value
      */
     public static function validSecond(int $value)
     {
         if ($value < 0 || $value > 59) {
             throw new InvalidUnitException('second', $value);
         }
+    }
+
+    /**
+     * valid micro jalali
+     *
+     * @param int $value
+     * @return bool
+     */
+    public static function isValidMicro(int $value): bool
+    {
+        return $value < 0 || $value > 999999;
     }
 
     /**
