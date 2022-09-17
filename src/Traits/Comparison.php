@@ -14,7 +14,7 @@ trait Comparison
      */
     public function eq(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this == new self($datetime);
+        return $this == new static($datetime);
     }
 
     /**
@@ -56,7 +56,7 @@ trait Comparison
      */
     public function gt(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this > new self($datetime);
+        return $this > new static($datetime);
     }
 
     /**
@@ -77,7 +77,7 @@ trait Comparison
      */
     public function gte(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this >= new self($datetime);
+        return $this >= new static($datetime);
     }
 
     /**
@@ -98,7 +98,7 @@ trait Comparison
      */
     public function lt(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this < new self($datetime);
+        return $this < new static($datetime);
     }
 
     /**
@@ -119,7 +119,7 @@ trait Comparison
      */
     public function lte(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this <= new self($datetime);
+        return $this <= new static($datetime);
     }
 
     /**
@@ -179,7 +179,7 @@ trait Comparison
      */
     public function min(Jalali|DateTime|string|int|null $datetime): static
     {
-        return $this->lt($datetime) ? $this : new self($datetime);
+        return $this->lt($datetime) ? $this : new static($datetime);
     }
 
     /**
@@ -200,7 +200,7 @@ trait Comparison
      */
     public function max(Jalali|DateTime|string|int|null $datetime): static
     {
-        return $this->gt($datetime) ? $this : new self($datetime);
+        return $this->gt($datetime) ? $this : new static($datetime);
     }
 
     /**
@@ -339,7 +339,7 @@ trait Comparison
      */
     public function isSameAs(string $format, Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        $datetime = new self($datetime);
+        $datetime = new static($datetime);
 
         return $this->format($format) === $datetime->format($format);
     }

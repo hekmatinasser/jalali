@@ -23,7 +23,7 @@ trait Creator
         if (empty($datetime)) {
             $gregorianDatetime = 'now';
         } elseif (is_string($datetime)) {
-            $gregorianDatetime = self::faToEnNumbers(self::arToEnNumbers($datetime));
+            $gregorianDatetime = static::faToEnNumbers(static::arToEnNumbers($datetime));
         } elseif ($datetime instanceof DateTime) {
             $gregorianDatetime = "@{$datetime->getTimestamp()}";
         } elseif (is_int($datetime)) {
@@ -37,7 +37,7 @@ trait Creator
             } else {
                 parent::__construct($gregorianDatetime, static::createTimeZone($timezone));
             }
-            self::loadMessages();
+            static::loadMessages();
         } catch (Exception) {
             throw new InvalidDatetimeException($datetime);
         }
@@ -64,7 +64,7 @@ trait Creator
      */
     public static function today(DateTimeZone|string $timezone = null): static
     {
-        return self::now($timezone)->startDay();
+        return static::now($timezone)->startDay();
     }
 
     /**
@@ -76,7 +76,7 @@ trait Creator
      */
     public static function tomorrow(DateTimeZone|string $timezone = null): static
     {
-        return self::now($timezone)->addDay()->startDay();
+        return static::now($timezone)->addDay()->startDay();
     }
 
     /**
@@ -88,7 +88,7 @@ trait Creator
      */
     public static function yesterday(DateTimeZone|string $timezone = null): static
     {
-        return self::now($timezone)->subDay()->startDay();
+        return static::now($timezone)->subDay()->startDay();
     }
 
     /**
@@ -134,23 +134,23 @@ trait Creator
      */
     public static function parse($datetime, DateTimeZone|string $timezone = null): static
     {
-        self::loadMessages();
+        static::loadMessages();
         $names = array_map(function ($value) {
             return " $value ";
-        }, array_values(self::$messages['year_months']));
+        }, array_values(static::$messages['year_months']));
         $values = array_map(function ($value) {
             return "-$value-";
         }, range(1, 12));
         $formatted = str_replace($names, $values, $datetime);
 
-        $formatted = str_replace(array_values(self::$messages['year_months']), range(1, 12), $formatted);
+        $formatted = str_replace(array_values(static::$messages['year_months']), range(1, 12), $formatted);
 
         $parse = date_parse($formatted);
         if ($parse['error_count'] > 0) {
             throw new InvalidDatetimeException($datetime);
         }
 
-        return self::createJalali($parse['year'], $parse['month'], $parse['day'], $parse['hour'], $parse['minute'], $parse['second'], $timezone);
+        return static::createJalali($parse['year'], $parse['month'], $parse['day'], $parse['hour'], $parse['minute'], $parse['second'], $timezone);
     }
 
     /**
@@ -163,15 +163,15 @@ trait Creator
      */
     public static function parseFormat(string $format, string $datetime, bool $timezone = null): static
     {
-        self::loadMessages();
-        $formatted = str_replace(array_values(self::$messages['year_months']), range(1, 12), $datetime);
+        static::loadMessages();
+        $formatted = str_replace(array_values(static::$messages['year_months']), range(1, 12), $datetime);
 
         $parse = date_parse_from_format($format, $formatted);
         if ($parse['error_count'] > 0) {
             throw new InvalidDatetimeException($datetime);
         }
 
-        return self::createJalali($parse['year'], $parse['month'], $parse['day'], $parse['hour'], $parse['minute'], $parse['second'], $timezone);
+        return static::createJalali($parse['year'], $parse['month'], $parse['day'], $parse['hour'], $parse['minute'], $parse['second'], $timezone);
     }
 
     /**
@@ -327,9 +327,9 @@ trait Creator
      */
     public static function createJalali(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        self::validDateTime($year, $month, $day, $hour, $minute, $second);
+        static::validDateTime($year, $month, $day, $hour, $minute, $second);
 
-        list($year, $month, $day) = self::jalaliToGregorian($year, $month, $day);
+        list($year, $month, $day) = static::jalaliToGregorian($year, $month, $day);
         $datetime = sprintf('%04s-%02s-%02s %02s:%02s:%02s', $year, $month, $day, $hour, $minute, $second);
 
         return new static($datetime, $timezone);

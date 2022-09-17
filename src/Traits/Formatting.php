@@ -90,21 +90,21 @@ trait Formatting
             '/' => '/',
             ' ' => ' ',
             'd' => sprintf('%02s', $day),
-            'D' => substr(self::$messages['weekdays'][$week + 1], 0, 1),
+            'D' => substr(static::$messages['weekdays'][$week + 1], 0, 1),
             'j' => $day,
-            'l' => self::$messages['weekdays'][$week + 1],
+            'l' => static::$messages['weekdays'][$week + 1],
             'N' => $week + 1,
             'w' => $week,
             'z' => array_sum(array_slice(static::$daysMonthJalali, 0, $month - 1)) + $day,
             'S' => static::$messages['phrase']['th'],
             'W' => $this->dayOfWeek(),
-            'F' => self::$messages['year_months'][$month],
+            'F' => static::$messages['year_months'][$month],
             'm' => sprintf('%02s', $month),
-            'M' => substr(self::$messages['year_months'][$month], 0, 3),
+            'M' => substr(static::$messages['year_months'][$month], 0, 3),
             'n' => $month,
             't' => static::isLeapYear($year) && ($month == 12) ? 30 : static::$daysMonthJalali[$month - 1],
             'q' => (int) ceil($this->month / static::MONTHS_PER_QUARTER),
-            'Q' => self::$messages['quarters'][(int) ceil($this->month / static::MONTHS_PER_QUARTER)],
+            'Q' => static::$messages['quarters'][(int) ceil($this->month / static::MONTHS_PER_QUARTER)],
             'L' => (int) $this->isLeapYear($year),
             'Y', 'o' => $year,
             'y' => substr($year, 2),
@@ -112,7 +112,7 @@ trait Formatting
             'A' => static::$messages['phrase'][parent::format('a') == 'am' ? 'ante_meridiem' : 'post_meridiem'],
             'B', 'g', 'G', 'h', 'H', 's', 'u', 'i', 'e', 'I', 'O', 'P', 'T', 'Z' => parent::format($char),
             'c' => ("$year-$month-$day " . parent::format('H:i:s P')),
-            'r' => (substr(self::$messages['weekdays'][$week], 0, 1) . "، $day " . self::$messages['year_months'][$month] . " $year " . parent::format('H:i:s P')),
+            'r' => (substr(static::$messages['weekdays'][$week], 0, 1) . "، $day " . static::$messages['year_months'][$month] . " $year " . parent::format('H:i:s P')),
             'U' => $timestamp,
             default => $char,
         };
@@ -128,7 +128,7 @@ trait Formatting
         $offset = (int) $this->clone()->startYear()->format('w');
         $days = (int) $this->format('z');
 
-        return ceil(($days + $offset) / self::DAYS_PER_WEEK);
+        return ceil(($days + $offset) / static::DAYS_PER_WEEK);
     }
 
     /**
@@ -278,7 +278,7 @@ trait Formatting
             static::YEARS_PER_DECADE,
             static::DECADE_PER_CENTURY,
         ];
-        $difference = $this->diffSeconds(new self($datetime));
+        $difference = $this->diffSeconds(new static($datetime));
         $absolute = static::$messages['phrase'][$difference < 0 ? 'later' : 'ago'];
 
         $difference = abs($difference);

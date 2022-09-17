@@ -79,7 +79,7 @@ trait Accessor
         } elseif ($name == 'timestamp') {
             $this->timestamp($value);
         } elseif ($name == 'timezone') {
-            $this->timezone(self::createTimeZone($value));
+            $this->timezone(static::createTimeZone($value));
         } else {
             throw new UnknownSetterException($name);
         }
@@ -229,7 +229,7 @@ trait Accessor
      */
     public function setDateJalali(int $year, int $month, int $day): static
     {
-        list($year, $month, $day) = self::jalaliToGregorian($year, $month, $day);
+        list($year, $month, $day) = static::jalaliToGregorian($year, $month, $day);
         $this->setDate($year, $month, $day);
 
         return $this;
@@ -251,7 +251,7 @@ trait Accessor
         $second = $units[2] ?? 0;
         $micro = $units[3] ?? 0;
 
-        self::validTime($hour, $minute, $second, $micro);
+        static::validTime($hour, $minute, $second, $micro);
         $this->setTime($hour, $minute, $second, $micro);
 
         return $this;

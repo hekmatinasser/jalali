@@ -116,7 +116,7 @@ trait Validation
      */
     public static function isValidDay(int $year, int $month, int $day): bool
     {
-        return self::isValidDate($year, $month, $day);
+        return static::isValidDate($year, $month, $day);
     }
 
     /**
@@ -235,9 +235,9 @@ trait Validation
      */
     public static function validDate(int $year, int $month, int $day)
     {
-        self::validYear($year);
-        self::validMount($month);
-        self::validDay($year, $month, $day);
+        static::validYear($year);
+        static::validMount($month);
+        static::validDay($year, $month, $day);
     }
 
     /**
@@ -250,11 +250,11 @@ trait Validation
      */
     public static function validTime(int $hour, int $minute, int $second, int $micro = 0)
     {
-        self::validHour($hour);
-        self::validMinute($minute);
-        self::validSecond($second);
+        static::validHour($hour);
+        static::validMinute($minute);
+        static::validSecond($second);
         if ($micro) {
-            self::validMicro($micro);
+            static::validMicro($micro);
         }
     }
 
@@ -271,7 +271,7 @@ trait Validation
      */
     public static function validDateTime(int $year, int $month, int $day, int $hour, int $minute, int $second, int $micro = 0)
     {
-        self::validDate($year, $month, $day);
-        self::validTime($hour, $minute, $second, $micro);
+        static::validDate($year, $month, $day);
+        static::validTime($hour, $minute, $second, $micro);
     }
 }
