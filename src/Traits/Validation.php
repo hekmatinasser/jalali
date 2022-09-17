@@ -89,9 +89,9 @@ trait Validation
      * @param int $value
      * @return bool
      */
-    public static function isValidMount(int $value): bool
+    public static function isValidMonth(int $value): bool
     {
-        return $value <= 1 || $value >= 12;
+        return $value < 1 || $value > 12;
     }
 
     /**
@@ -99,9 +99,9 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validMount(int $value)
+    public static function validMonth(int $value)
     {
-        if ($value <= 1 || $value >= 12) {
+        if ($value < 1 || $value > 12) {
             throw new InvalidUnitException('month', $value);
         }
     }
@@ -236,7 +236,7 @@ trait Validation
     public static function validDate(int $year, int $month, int $day)
     {
         static::validYear($year);
-        static::validMount($month);
+        static::validMonth($month);
         static::validDay($year, $month, $day);
     }
 
