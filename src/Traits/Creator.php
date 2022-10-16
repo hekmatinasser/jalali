@@ -141,8 +141,8 @@ trait Creator
         $values = array_map(function ($value) {
             return "-$value-";
         }, range(1, 12));
-        $formatted = str_replace($names, $values, $datetime);
-
+        $formatted = self::faToEnNumbers(self::arToEnNumbers($datetime));
+        $formatted = str_replace($names, $values, $formatted);
         $formatted = str_replace(array_values(static::$messages['year_months']), range(1, 12), $formatted);
 
         $parse = date_parse($formatted);
@@ -164,7 +164,8 @@ trait Creator
     public static function parseFormat(string $format, string $datetime, bool $timezone = null): static
     {
         static::loadMessages();
-        $formatted = str_replace(array_values(static::$messages['year_months']), range(1, 12), $datetime);
+        $formatted = self::faToEnNumbers(self::arToEnNumbers($datetime));
+        $formatted = str_replace(array_values(static::$messages['year_months']), range(1, 12), $formatted);
 
         $parse = date_parse_from_format($format, $formatted);
         if ($parse['error_count'] > 0) {
