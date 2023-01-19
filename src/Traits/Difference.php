@@ -101,7 +101,7 @@ trait Difference
      */
     public function diffSeconds(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
-        $datetime = $datetime ?: static::now($this->getTimezone());
+        $datetime = $this->resolve($datetime);
 
         $diff = $datetime->getTimestamp() - $this->getTimestamp();
 
