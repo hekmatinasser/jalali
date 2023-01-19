@@ -133,7 +133,7 @@ class ComparisonTest extends TestCase
         $this->assertEquals(3, $result);
 
 
-        $result = $datetime->diffSeconds(Jalali::parse('1398-10-10 21:30:45'));
+        $result = $datetime->diffSeconds(Jalali::parse('1398-10-10 21:30:45'), false);
         $this->assertEquals(-5, $result);
     }
 
