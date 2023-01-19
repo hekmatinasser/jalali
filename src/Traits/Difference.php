@@ -18,7 +18,7 @@ trait Difference
      */
     public function diffYears(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
-        $datetime = $datetime ?: new static();
+        $datetime = $this->resolve($datetime);
 
         $diff = $this->year - $datetime->year;
 
