@@ -47,12 +47,13 @@ trait Difference
      * Get the difference in weeks
      *
      * @param Jalali|DateTime|string|int|null $datetime
+     * @param bool $absolute Get the absolute of the difference
      * @return int
      * @throws Exception
      */
-    public function diffWeeks(Jalali|DateTime|string|int|null $datetime = null): int
+    public function diffWeeks(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
-        return (int) ($this->diffDays($datetime) / static::DAYS_PER_WEEK);
+        return (int) ($this->diffDays($datetime, $absolute) / static::DAYS_PER_WEEK);
     }
 
     /**
