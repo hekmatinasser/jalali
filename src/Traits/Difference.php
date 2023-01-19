@@ -64,7 +64,7 @@ trait Difference
      */
     public function diffDays(Jalali|DateTime|string|int|null $datetime = null): int
     {
-        $datetime = $datetime ?: new static();
+        $datetime = $this->resolve($datetime);
 
         return (int) $this->diff($datetime->datetime())->format('%r%a');
     }
