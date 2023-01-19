@@ -44,6 +44,15 @@ trait Creator
     }
 
     /**
+     * @param Jalali|DateTime|string|int|null $datetime
+     * @return static
+     */
+    protected function resolve(Jalali|DateTime|string|int|null $datetime = null): static
+    {
+        return ($datetime instanceof Jalali) ? $datetime : new static($datetime);
+    }
+
+    /**
      * Create a Jalali now datetime
      *
      *
