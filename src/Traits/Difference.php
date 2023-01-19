@@ -84,13 +84,13 @@ trait Difference
 
     /**
      * Get the difference in minutes
-     *
      * @param Jalali|DateTime|string|int|null $datetime
+     * @param bool $absolute Get the absolute of the difference
      * @return int
      */
-    public function diffMinutes(Jalali|DateTime|string|int|null $datetime = null): int
+    public function diffMinutes(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
-        return (int) ($this->diffSeconds($datetime) / static::SECONDS_PER_MINUTE);
+        return (int) ($this->diffSeconds($datetime, $absolute) / static::SECONDS_PER_MINUTE);
     }
 
     /**
