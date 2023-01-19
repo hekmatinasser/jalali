@@ -278,7 +278,7 @@ trait Formatting
             static::YEARS_PER_DECADE,
             static::DECADE_PER_CENTURY,
         ];
-        $difference = $this->diffSeconds(new static($datetime));
+        $difference = $this->diffSeconds(new static($datetime), false);
         $absolute = static::$messages['phrase'][$difference < 0 ? 'later' : 'ago'];
 
         $difference = abs($difference);
