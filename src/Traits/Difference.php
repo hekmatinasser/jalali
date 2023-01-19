@@ -26,15 +26,17 @@ trait Difference
      * Get the difference in months
      *
      * @param Jalali|DateTime|string|int|null $datetime
+     * @param bool $absolute Get the absolute of the difference
      * @return int
      * @throws Exception
      */
-    public function diffMonths(Jalali|DateTime|string|int|null $datetime = null): int
+    public function diffMonths(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
         $datetime = $datetime ?: new static();
 
-        return $this->diffYears($datetime) * static::MONTHS_PER_YEAR + (int) $this->diff($datetime->datetime())->format('%r%m');
-    }
+        $diff = (($this->year * static::MONTHS_PER_YEAR) + $this->month) -
+            (($datetime->year * static::MONTHS_PER_YEAR) + $datetime->month);
+        return $absolute ? abs($diff) : $diff;    }
 
     /**
      * Get the difference in weeks
