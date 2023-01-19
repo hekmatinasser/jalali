@@ -76,7 +76,7 @@ class ComparisonTest extends TestCase
         $result = $datetime->diffDays(Jalali::parse('1398-10-15 21:30:50'));
         $this->assertEquals(5, $result);
 
-        $result = $datetime->diffDays(Jalali::parse('1398-10-01 21:30:50'));
+        $result = $datetime->diffDays(Jalali::parse('1398-10-01 21:30:50'), false);
         $this->assertEquals(-9, $result);
     }
 
