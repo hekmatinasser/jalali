@@ -35,7 +35,7 @@ trait Difference
      */
     public function diffMonths(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
-        $datetime = $datetime ?: new static();
+        $datetime = $this->resolve($datetime);
 
         $diff = (($this->year * static::MONTHS_PER_YEAR) + $this->month) -
             (($datetime->year * static::MONTHS_PER_YEAR) + $datetime->month);
