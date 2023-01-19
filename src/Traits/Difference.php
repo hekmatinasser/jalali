@@ -36,7 +36,9 @@ trait Difference
 
         $diff = (($this->year * static::MONTHS_PER_YEAR) + $this->month) -
             (($datetime->year * static::MONTHS_PER_YEAR) + $datetime->month);
-        return $absolute ? abs($diff) : $diff;    }
+
+        return $absolute ? abs($diff) : $diff;
+    }
 
     /**
      * Get the difference in weeks
