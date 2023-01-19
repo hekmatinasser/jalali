@@ -45,10 +45,10 @@ class ComparisonTest extends TestCase
         $this->assertEquals(0, $result);
 
         $result = $datetime->diffYears(Jalali::parse('1395-10-10 21:30:50'));
-        $this->assertEquals(-3, $result);
+        $this->assertEquals(3, $result);
 
-        $result = $datetime->diffYears(Jalali::parse('1399-10-11 21:30:50'));
-        $this->assertEquals(1, $result);
+        $result = $datetime->diffYears(Jalali::parse('1399-10-11 21:30:50'), false);
+        $this->assertEquals(-1, $result);
     }
 
     public function testDiffMonths()
