@@ -12,14 +12,17 @@ trait Difference
      * Get the difference in years
      *
      * @param Jalali|DateTime|string|int|null $datetime
+     * @param bool $absolute Get the absolute of the difference
      * @return int
      * @throws Exception
      */
-    public function diffYears(Jalali|DateTime|string|int|null $datetime = null): int
+    public function diffYears(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
         $datetime = $datetime ?: new static();
 
-        return (int) $this->diff($datetime->datetime())->format('%r%y');
+        $diff = $this->year - $datetime->year;
+
+        return $absolute ? abs($diff) : $diff;
     }
 
     /**
