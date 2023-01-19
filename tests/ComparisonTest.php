@@ -90,7 +90,7 @@ class ComparisonTest extends TestCase
         $result = $datetime->diffWeeks(Jalali::parse('1398-11-15 21:30:50'));
         $this->assertEquals(5, $result);
 
-        $result = $datetime->diffWeeks(Jalali::parse('1398-10-01 21:30:50'));
+        $result = $datetime->diffWeeks(Jalali::parse('1398-10-01 21:30:50'), false);
         $this->assertEquals(-1, $result);
     }
 
