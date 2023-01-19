@@ -95,15 +95,16 @@ trait Difference
 
     /**
      * Get the difference in seconds
-     *
      * @param Jalali|DateTime|string|int|null $datetime
-     *
+     * @param bool $absolute Get the absolute of the difference
      * @return int
      */
-    public function diffSeconds(Jalali|DateTime|string|int|null $datetime = null): int
+    public function diffSeconds(Jalali|DateTime|string|int|null $datetime = null, bool $absolute = true): int
     {
         $datetime = $datetime ?: static::now($this->getTimezone());
 
-        return $datetime->getTimestamp() - $this->getTimestamp();
+        $diff = $datetime->getTimestamp() - $this->getTimestamp();
+
+        return $absolute ? abs($diff) : $diff;
     }
 }
