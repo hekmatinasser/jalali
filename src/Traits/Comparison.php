@@ -9,6 +9,7 @@ trait Comparison
 {
     /**
      * Determines if the instance is equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -19,6 +20,7 @@ trait Comparison
 
     /**
      * Determines if the instance is equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see eq()
@@ -30,6 +32,7 @@ trait Comparison
 
     /**
      * Determines if the instance is not equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -40,6 +43,7 @@ trait Comparison
 
     /**
      * Determines if the instance is not equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see ne()
@@ -51,6 +55,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -61,6 +66,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see gt()
@@ -72,6 +78,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than or equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -82,6 +89,7 @@ trait Comparison
 
     /**
      * Determines if the instance is greater (after) than or equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see gte()
@@ -93,6 +101,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) than another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -103,6 +112,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) than another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see lt()
@@ -114,6 +124,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) or equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -124,6 +135,7 @@ trait Comparison
 
     /**
      * Determines if the instance is less (before) or equal to another
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see lte()
@@ -135,6 +147,7 @@ trait Comparison
 
     /**
      * Determines if the instance is between two others
+     *
      * @param Jalali|DateTime|string|int|null $first
      * @param Jalali|DateTime|string|int|null $second
      * @param bool $equal Indicates if a > and < comparison should be used or <= or >=
@@ -152,6 +165,7 @@ trait Comparison
 
     /**
      * Get the closest date from the instance.
+     *
      * @param Jalali|DateTime|string|int|null $first
      * @param Jalali|DateTime|string|int|null $second
      * @return static
@@ -163,6 +177,7 @@ trait Comparison
 
     /**
      * Get the farthest date from the instance.
+     *
      * @param Jalali|DateTime|string|int|null $first
      * @param Jalali|DateTime|string|int|null $second
      * @return static
@@ -174,6 +189,7 @@ trait Comparison
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      */
@@ -185,6 +201,7 @@ trait Comparison
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      * @see min()
@@ -196,6 +213,7 @@ trait Comparison
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      */
@@ -207,6 +225,7 @@ trait Comparison
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      * @see max()
@@ -218,6 +237,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a weekday
+     *
      * @return bool
      */
     public function isWeekday(): bool
@@ -227,6 +247,7 @@ trait Comparison
 
     /**
      * Determines if the instance is a weekend day
+     *
      * @return bool
      */
     public function isWeekend(): bool
@@ -236,6 +257,7 @@ trait Comparison
 
     /**
      * Determines if the instance is yesterday
+     *
      * @return bool
      */
     public function isYesterday(): bool
@@ -245,6 +267,7 @@ trait Comparison
 
     /**
      * Determines if the instance is today
+     *
      * @return bool
      */
     public function isToday(): bool
@@ -254,6 +277,7 @@ trait Comparison
 
     /**
      * Determines if the instance is tomorrow
+     *
      * @return bool
      */
     public function isTomorrow(): bool
@@ -263,6 +287,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the next week
+     *
      * @return bool
      */
     public function isNextWeek(): bool
@@ -272,6 +297,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the last week
+     *
      * @return bool
      */
     public function isLastWeek(): bool
@@ -281,6 +307,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the next month
+     *
      * @return bool
      */
     public function isNextMonth(): bool
@@ -290,6 +317,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the last month
+     *
      * @return bool
      */
     public function isLastMonth(): bool
@@ -299,6 +327,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within next year
+     *
      * @return bool
      */
     public function isNextYear(): bool
@@ -308,6 +337,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the previous year
+     *
      * @return bool
      */
     public function isLastYear(): bool
@@ -317,6 +347,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the future, greater (after) than now
+     *
      * @return bool
      */
     public function isFuture(): bool
@@ -326,6 +357,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the past, less (before) than now
+     *
      * @return bool
      */
     public function isPast(): bool
@@ -335,6 +367,7 @@ trait Comparison
 
     /**
      * Compares the formatted values of the two dates.
+     *
      * @param string $format The date formats to compare.
      * @param Jalali|DateTime|string|int|null $datetime The instance to compare with or null to use current day.
      * @return bool
@@ -348,6 +381,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the current year
+     *
      * @return bool
      */
     public function isCurrentYear(): bool
@@ -357,6 +391,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the current month
+     *
      * @return bool
      */
     public function isCurrentMonth(): bool
@@ -366,6 +401,7 @@ trait Comparison
 
     /**
      * Checks if the passed in date is in the same year as the instance year.
+     *
      * @param Jalali|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
@@ -376,6 +412,7 @@ trait Comparison
 
     /**
      * Checks if the passed in date is in the same month as the instance month (and year if needed).
+     *
      * @param Jalali|DateTime|string|int|null $datetime The instance to compare with or null to use current day.
      * @param bool $sameYear Check if it is the same month in the same year.
      * @return bool
@@ -387,6 +424,7 @@ trait Comparison
 
     /**
      * Checks if the passed in date is the same day as the instance current day.
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
@@ -397,6 +435,7 @@ trait Comparison
 
     /**
      * Check if date the birthday. Compares the date/month values of the two dates.
+     *
      * @param Jalali|DateTime|string|int|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
@@ -407,6 +446,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Saturday.
+     *
      * @return bool
      */
     public function isSaturday(): bool
@@ -416,6 +456,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Sunday.
+     *
      * @return bool
      */
     public function isSunday(): bool
@@ -425,6 +466,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Monday.
+     *
      * @return bool
      */
     public function isMonday(): bool
@@ -434,6 +476,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Tuesday.
+     *
      * @return bool
      */
     public function isTuesday(): bool
@@ -443,6 +486,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Wednesday.
+     *
      * @return bool
      */
     public function isWednesday(): bool
@@ -452,6 +496,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Thursday.
+     *
      * @return bool
      */
     public function isThursday(): bool
@@ -461,6 +506,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Friday.
+     *
      * @return bool
      */
     public function isFriday(): bool
