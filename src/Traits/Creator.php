@@ -12,7 +12,8 @@ use Hekmatinasser\Jalali\Jalali;
 trait Creator
 {
     /**
-     * create object of Jalali
+     * Create object of Jalali
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @param DateTimeZone|string|null $timezone
      * @throws InvalidDatetimeException
@@ -44,6 +45,8 @@ trait Creator
     }
 
     /**
+     * Resolve object of Jalali
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @param DateTimeZone|string|null $timezone
      * @return static
@@ -55,7 +58,6 @@ trait Creator
 
     /**
      * Create a Jalali now datetime
-     *
      *
      * @param null $timezone
      * @return static
@@ -69,7 +71,6 @@ trait Creator
      * Create a Jalali instance for today.
      *
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function today(DateTimeZone|string $timezone = null): static
@@ -81,7 +82,6 @@ trait Creator
      * Create a Jalali instance for tomorrow.
      *
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function tomorrow(DateTimeZone|string $timezone = null): static
@@ -93,7 +93,6 @@ trait Creator
      * Create a Jalali instance for yesterday.
      *
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function yesterday(DateTimeZone|string $timezone = null): static
@@ -106,7 +105,6 @@ trait Creator
      *
      * @param $datetime
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function instance($datetime = null, DateTimeZone|string $timezone = null): static
@@ -139,7 +137,6 @@ trait Creator
      *
      * @param $datetime
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function parse($datetime, DateTimeZone|string $timezone = null): static
@@ -195,7 +192,6 @@ trait Creator
      * @param int $minute
      * @param int $second
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function create(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
@@ -210,7 +206,6 @@ trait Creator
      * @param int $month
      * @param int $day
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
@@ -227,7 +222,6 @@ trait Creator
      * @param int $minute
      * @param int $second
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
@@ -242,7 +236,6 @@ trait Creator
      *
      * @param int $timestamp
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createTimestamp(int $timestamp, DateTimeZone|string $timezone = null): static
@@ -251,6 +244,8 @@ trait Creator
     }
 
     /**
+     * Create a timezone instance from a string.
+     *
      * @param null $timezone
      * @return DateTimeZone|string|null
      */
@@ -277,7 +272,6 @@ trait Creator
      * @param int $minute
      * @param int $second
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createGregorian(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
@@ -296,7 +290,6 @@ trait Creator
      * @param int $month
      * @param int $day
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createGregorianDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
@@ -313,7 +306,6 @@ trait Creator
      * @param int $minute
      * @param int $second
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createGregorianTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
@@ -333,7 +325,6 @@ trait Creator
      * @param int $minute
      * @param int $second
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createJalali(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
@@ -353,7 +344,6 @@ trait Creator
      * @param int $month
      * @param int $day
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createJalaliDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
@@ -370,7 +360,6 @@ trait Creator
      * @param int $minute
      * @param int $second
      * @param DateTimeZone|string|null $timezone
-     *
      * @return static
      */
     public static function createJalaliTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
