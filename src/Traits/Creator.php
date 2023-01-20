@@ -348,7 +348,7 @@ trait Creator
      */
     public static function createJalaliDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
     {
-        list($hour, $minute, $second) = explode('-', (new static())->format('G-i-s'));
+        list($hour, $minute, $second) = explode('-', static::now($timezone)->format('G-i-s'));
 
         return static::createJalali($year, $month, $day, $hour, $minute, $second, $timezone);
     }
@@ -364,7 +364,7 @@ trait Creator
      */
     public static function createJalaliTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
     {
-        list($year, $month, $day) = explode('-', (new static())->format('Y-n-j'));
+        list($year, $month, $day) = explode('-', static::now($timezone)->format('Y-n-j'));
 
         return static::createJalali($year, $month, $day, $hour, $minute, $second, $timezone);
     }
