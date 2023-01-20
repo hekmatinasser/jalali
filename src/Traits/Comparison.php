@@ -201,7 +201,8 @@ trait Comparison
      */
     public function max(Jalali|DateTime|string|int|null $datetime): static
     {
-        return $this->gt($datetime) ? $this : new static($datetime);
+        $datetime = $this->resolve($datetime);
+        return $this->gt($datetime) ? $this : $datetime;
     }
 
     /**
