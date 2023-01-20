@@ -13,7 +13,7 @@ trait Accessor
      *
      * @param string $name
      * @return string|int
-     *@throws InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __get(string $name)
     {
