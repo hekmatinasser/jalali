@@ -13,9 +13,9 @@ trait Creator
 {
     /**
      * create object of Jalali
-     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @param DateTimeZone|string|null $timezone
+     * @throws InvalidDatetimeException
      */
     public function __construct($datetime = null, $timezone = null)
     {
