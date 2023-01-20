@@ -98,7 +98,7 @@ trait Comparison
      */
     public function lt(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this < new static($datetime);
+        return $this < $this->resolve($datetime);
     }
 
     /**
