@@ -296,6 +296,8 @@ trait Formatting
     }
 
     /**
+     * Get word datetime
+     *
      * @param string $format
      * @return string
      */
