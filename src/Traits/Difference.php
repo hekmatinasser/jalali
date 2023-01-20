@@ -85,6 +85,7 @@ trait Difference
 
     /**
      * Get the difference in minutes
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @param bool $absolute Get the absolute of the difference
      * @return int
@@ -96,6 +97,7 @@ trait Difference
 
     /**
      * Get the difference in seconds
+     *
      * @param Jalali|DateTime|string|int|null $datetime
      * @param bool $absolute Get the absolute of the difference
      * @return int
