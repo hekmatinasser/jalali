@@ -45,11 +45,12 @@ trait Creator
 
     /**
      * @param Jalali|DateTime|string|int|null $datetime
+     * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    protected function resolve(Jalali|DateTime|string|int|null $datetime = null): static
+    protected function resolve(Jalali|DateTime|string|int|null $datetime = null, DateTimeZone|string $timezone = null): static
     {
-        return ($datetime instanceof Jalali) ? $datetime : new static($datetime);
+        return ($datetime instanceof Jalali) ? $datetime : new static($datetime, $timezone);
     }
 
     /**
