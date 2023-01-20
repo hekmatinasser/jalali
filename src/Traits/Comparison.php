@@ -179,7 +179,8 @@ trait Comparison
      */
     public function min(Jalali|DateTime|string|int|null $datetime): static
     {
-        return $this->lt($datetime) ? $this : new static($datetime);
+        $datetime = $this->resolve($datetime);
+        return $this->lt($datetime) ? $this : $datetime;
     }
 
     /**
