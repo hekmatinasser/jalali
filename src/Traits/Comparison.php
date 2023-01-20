@@ -341,7 +341,7 @@ trait Comparison
      */
     public function isSameAs(string $format, Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        $datetime = new static($datetime);
+        $datetime = $this->resolve($datetime);
 
         return $this->format($format) === $datetime->format($format);
     }
