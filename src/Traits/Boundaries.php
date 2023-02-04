@@ -157,6 +157,6 @@ trait Boundaries
     {
         $year = $this->year;
 
-        return $this->setDateTime($year, 12, self::isLeapYear($year) ? 30 : 29, 23, 59, 59, 999999);
+        return $this->setDateTime($year, 12, static::isLeapYear($year) ? 30 : 29, 23, 59, 59, 999999);
     }
 }

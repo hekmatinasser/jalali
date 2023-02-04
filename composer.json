@@ -16,7 +16,7 @@
         "Shamsi"
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "hekmatinasser/notowo": "^1.0"
     },
     "require-dev": {

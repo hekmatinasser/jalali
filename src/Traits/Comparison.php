@@ -2,148 +2,160 @@
 
 namespace Hekmatinasser\Jalali\Traits;
 
+use DateTime;
 use Hekmatinasser\Jalali\Jalali;
-use JetBrains\PhpStorm\Pure;
 
 trait Comparison
 {
     /**
      * Determines if the instance is equal to another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function eq(Jalali $datetime = null): bool
+    public function eq(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this == ($datetime ?: new self());
+        return $this == $this->resolve($datetime);
     }
 
     /**
      * Determines if the instance is equal to another
-     * @param Jalali|null $datetime
-     * @see eq()
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
+     * @see eq()
      */
-    public function equalTo(Jalali $datetime = null): bool
+    public function equalTo(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->eq($datetime);
     }
 
     /**
      * Determines if the instance is not equal to another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function ne(Jalali $datetime = null): bool
+    public function ne(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return ! $this->eq($datetime);
     }
 
     /**
      * Determines if the instance is not equal to another
-     * @param Jalali|null $datetime
-     * @see ne()
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
+     * @see ne()
      */
-    public function notEqualTo(Jalali $datetime = null): bool
+    public function notEqualTo(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->ne($datetime);
     }
 
     /**
      * Determines if the instance is greater (after) than another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function gt(Jalali $datetime = null): bool
+    public function gt(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this > ($datetime ?: new self());
+        return $this > $this->resolve($datetime);
     }
 
     /**
      * Determines if the instance is greater (after) than another
-     * @param Jalali|null $datetime
-     * @see gt()
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
+     * @see gt()
      */
-    public function greaterThan(Jalali $datetime = null): bool
+    public function greaterThan(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->gt($datetime);
     }
 
     /**
      * Determines if the instance is greater (after) than or equal to another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function gte(Jalali $datetime = null): bool
+    public function gte(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this >= ($datetime ?: new self());
+        return $this >= $this->resolve($datetime);
     }
 
     /**
      * Determines if the instance is greater (after) than or equal to another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see gte()
      */
-    public function greaterThanOrEqualTo(Jalali $datetime = null): bool
+    public function greaterThanOrEqualTo(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->gte($datetime);
     }
 
     /**
      * Determines if the instance is less (before) than another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function lt(Jalali $datetime = null): bool
+    public function lt(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this < ($datetime ?: new self());
+        return $this < $this->resolve($datetime);
     }
 
     /**
      * Determines if the instance is less (before) than another
-     * @param Jalali|null $datetime
-     * @see lt()
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
+     * @see lt()
      */
-    public function lessThan(Jalali $datetime = null): bool
+    public function lessThan(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->lt($datetime);
     }
 
     /**
      * Determines if the instance is less (before) or equal to another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function lte(Jalali $datetime = null): bool
+    public function lte(Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        return $this <= ($datetime ?: new self());
+        return $this <= $this->resolve($datetime);
     }
 
     /**
      * Determines if the instance is less (before) or equal to another
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      * @see lte()
      */
-    public function lessThanOrEqualTo(Jalali $datetime = null): bool
+    public function lessThanOrEqualTo(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->lte($datetime);
     }
 
     /**
      * Determines if the instance is between two others
-     * @param Jalali $first
-     * @param Jalali $second
+     *
+     * @param Jalali|DateTime|string|int|null $first
+     * @param Jalali|DateTime|string|int|null $second
      * @param bool $equal Indicates if a > and < comparison should be used or <= or >=
      * @return bool
      */
-    public function between(Jalali $first, Jalali $second, bool $equal = true): bool
+    public function between(Jalali|DateTime|string|int|null $first, Jalali|DateTime|string|int|null $second, bool $equal = true): bool
     {
         list($less, $greater) = $first->lt($second) ? [$first, $second] : [$second, $first];
-
         if ($equal) {
             return $this->gte($less) && $this->lte($greater);
         }
@@ -153,80 +165,91 @@ trait Comparison
 
     /**
      * Get the closest date from the instance.
-     * @param Jalali $first
-     * @param Jalali $second
+     *
+     * @param Jalali|DateTime|string|int|null $first
+     * @param Jalali|DateTime|string|int|null $second
      * @return static
      */
-    public function closest(Jalali $first, Jalali $second): static
+    public function closest(Jalali|DateTime|string|int|null $first, Jalali|DateTime|string|int|null $second): static
     {
         return $this->diffSeconds($first) < $this->diffSeconds($second) ? $first : $second;
     }
 
     /**
      * Get the farthest date from the instance.
-     * @param Jalali $first
-     * @param Jalali $second
+     *
+     * @param Jalali|DateTime|string|int|null $first
+     * @param Jalali|DateTime|string|int|null $second
      * @return static
      */
-    public function farthest(Jalali $first, Jalali $second): static
+    public function farthest(Jalali|DateTime|string|int|null $first, Jalali|DateTime|string|int|null $second): static
     {
         return $this->diffSeconds($first) > $this->diffSeconds($second) ? $first : $second;
     }
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
-     * @param Jalali $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      */
-    public function min(Jalali $datetime): static
+    public function min(Jalali|DateTime|string|int|null $datetime): static
     {
+        $datetime = $this->resolve($datetime);
+
         return $this->lt($datetime) ? $this : $datetime;
     }
 
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
-     * @param Jalali $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      * @see min()
      */
-    public function minimum(Jalali $datetime): static
+    public function minimum(Jalali|DateTime|string|int|null $datetime): static
     {
         return $this->min($datetime);
     }
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
-     * @param Jalali $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      */
-    public function max(Jalali $datetime): static
+    public function max(Jalali|DateTime|string|int|null $datetime): static
     {
+        $datetime = $this->resolve($datetime);
+
         return $this->gt($datetime) ? $this : $datetime;
     }
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
-     * @param Jalali $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return static
      * @see max()
      */
-    public function maximum(Jalali $datetime): static
+    public function maximum(Jalali|DateTime|string|int|null $datetime): static
     {
         return $this->max($datetime);
     }
 
     /**
      * Determines if the instance is a weekday
+     *
      * @return bool
      */
-    #[Pure]
- public function isWeekday(): bool
- {
-     return ! $this->isWeekend();
- }
+    public function isWeekday(): bool
+    {
+        return ! $this->isWeekend();
+    }
 
     /**
      * Determines if the instance is a weekend day
+     *
      * @return bool
      */
     public function isWeekend(): bool
@@ -236,6 +259,7 @@ trait Comparison
 
     /**
      * Determines if the instance is yesterday
+     *
      * @return bool
      */
     public function isYesterday(): bool
@@ -245,6 +269,7 @@ trait Comparison
 
     /**
      * Determines if the instance is today
+     *
      * @return bool
      */
     public function isToday(): bool
@@ -254,6 +279,7 @@ trait Comparison
 
     /**
      * Determines if the instance is tomorrow
+     *
      * @return bool
      */
     public function isTomorrow(): bool
@@ -263,6 +289,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the next week
+     *
      * @return bool
      */
     public function isNextWeek(): bool
@@ -272,6 +299,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the last week
+     *
      * @return bool
      */
     public function isLastWeek(): bool
@@ -281,6 +309,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the next month
+     *
      * @return bool
      */
     public function isNextMonth(): bool
@@ -290,6 +319,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the last month
+     *
      * @return bool
      */
     public function isLastMonth(): bool
@@ -299,6 +329,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within next year
+     *
      * @return bool
      */
     public function isNextYear(): bool
@@ -308,6 +339,7 @@ trait Comparison
 
     /**
      * Determines if the instance is within the previous year
+     *
      * @return bool
      */
     public function isLastYear(): bool
@@ -317,6 +349,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the future, greater (after) than now
+     *
      * @return bool
      */
     public function isFuture(): bool
@@ -326,6 +359,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the past, less (before) than now
+     *
      * @return bool
      */
     public function isPast(): bool
@@ -335,19 +369,21 @@ trait Comparison
 
     /**
      * Compares the formatted values of the two dates.
+     *
      * @param string $format The date formats to compare.
-     * @param Jalali|null $datetime The instance to compare with or null to use current day.
+     * @param Jalali|DateTime|string|int|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
-    public function isSameAs(string $format, Jalali $datetime = null): bool
+    public function isSameAs(string $format, Jalali|DateTime|string|int|null $datetime = null): bool
     {
-        $datetime = $datetime ?: new self();
+        $datetime = $this->resolve($datetime);
 
         return $this->format($format) === $datetime->format($format);
     }
 
     /**
      * Determines if the instance is in the current year
+     *
      * @return bool
      */
     public function isCurrentYear(): bool
@@ -357,6 +393,7 @@ trait Comparison
 
     /**
      * Determines if the instance is in the current month
+     *
      * @return bool
      */
     public function isCurrentMonth(): bool
@@ -366,6 +403,7 @@ trait Comparison
 
     /**
      * Checks if the passed in date is in the same year as the instance year.
+     *
      * @param Jalali|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
@@ -376,37 +414,41 @@ trait Comparison
 
     /**
      * Checks if the passed in date is in the same month as the instance month (and year if needed).
-     * @param Jalali|null $datetime The instance to compare with or null to use current day.
+     *
+     * @param Jalali|DateTime|string|int|null $datetime The instance to compare with or null to use current day.
      * @param bool $sameYear Check if it is the same month in the same year.
      * @return bool
      */
-    public function isSameMonth(Jalali $datetime = null, bool $sameYear = false): bool
+    public function isSameMonth(Jalali|DateTime|string|int|null $datetime = null, bool $sameYear = false): bool
     {
         return $this->isSameAs($sameYear ? 'Y-m' : 'm', $datetime);
     }
 
     /**
      * Checks if the passed in date is the same day as the instance current day.
-     * @param Jalali|null $datetime
+     *
+     * @param Jalali|DateTime|string|int|null $datetime
      * @return bool
      */
-    public function isSameDay(Jalali $datetime = null): bool
+    public function isSameDay(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->isSameAs('Y-m-d', $datetime);
     }
 
     /**
      * Check if date the birthday. Compares the date/month values of the two dates.
-     * @param Jalali|null $datetime The instance to compare with or null to use current day.
+     *
+     * @param Jalali|DateTime|string|int|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
-    public function isBirthday(Jalali $datetime = null): bool
+    public function isBirthday(Jalali|DateTime|string|int|null $datetime = null): bool
     {
         return $this->isSameAs('m-d', $datetime);
     }
 
     /**
      * Checks if this day is a Saturday.
+     *
      * @return bool
      */
     public function isSaturday(): bool
@@ -416,6 +458,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Sunday.
+     *
      * @return bool
      */
     public function isSunday(): bool
@@ -425,6 +468,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Monday.
+     *
      * @return bool
      */
     public function isMonday(): bool
@@ -434,6 +478,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Tuesday.
+     *
      * @return bool
      */
     public function isTuesday(): bool
@@ -443,6 +488,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Wednesday.
+     *
      * @return bool
      */
     public function isWednesday(): bool
@@ -452,6 +498,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Thursday.
+     *
      * @return bool
      */
     public function isThursday(): bool
@@ -461,6 +508,7 @@ trait Comparison
 
     /**
      * Checks if this day is a Friday.
+     *
      * @return bool
      */
     public function isFriday(): bool

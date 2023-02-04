@@ -78,11 +78,11 @@ trait Modification
             $day--;
         } else {
             if ($month == 12 && ($day == 30 || $day == 31)) {
-                $day = self::isLeapYear($year) ? 30 : 29;
+                $day = static::isLeapYear($year) ? 30 : 29;
             }
         }
 
-        return self::createJalali($year, $month, $day, $hour, $minute, $second, $this->getTimeZone());
+        return static::createJalali($year, $month, $day, $hour, $minute, $second, $this->getTimeZone());
     }
 
     /**
