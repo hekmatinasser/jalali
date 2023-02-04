@@ -196,6 +196,7 @@ trait Comparison
     public function min(Jalali|DateTime|string|int|null $datetime): static
     {
         $datetime = $this->resolve($datetime);
+
         return $this->lt($datetime) ? $this : $datetime;
     }
 
@@ -220,6 +221,7 @@ trait Comparison
     public function max(Jalali|DateTime|string|int|null $datetime): static
     {
         $datetime = $this->resolve($datetime);
+
         return $this->gt($datetime) ? $this : $datetime;
     }
 
