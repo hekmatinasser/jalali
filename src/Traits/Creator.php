@@ -165,10 +165,10 @@ trait Creator
      *
      * @param string $format
      * @param string $datetime
-     * @param bool|null $timezone
+     * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function parseFormat(string $format, string $datetime, bool $timezone = null): static
+    public static function parseFormat(string $format, string $datetime, DateTimeZone|string $timezone = null): static
     {
         static::loadMessages();
         $formatted = self::faToEnNumbers(self::arToEnNumbers($datetime));
