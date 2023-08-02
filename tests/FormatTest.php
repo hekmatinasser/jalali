@@ -113,9 +113,9 @@ class FormatTest extends TestCase
 
     public function testFormatWord()
     {
-        $datetime = Jalali::parse('1398-10-11 21:32:35')->formatWord('l d S F');
+        $datetime = Jalali::parse('1398-10-11 21:32:35')->formatWord('l dS F');
 
-        $this->assertEquals('چهارشنبه یازده ام دی', $datetime);
+        $this->assertEquals('چهارشنبه یازدهم دی', $datetime);
     }
 
     public function testFormatQuarter()
