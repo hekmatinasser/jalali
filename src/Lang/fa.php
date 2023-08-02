@@ -52,7 +52,7 @@ return [
         'pm' => 'ب ظ',
         'ante_meridiem' => 'قبل از ظهر',
         'post_meridiem' => 'بعد از ظهر',
-        'th' => 'ام',
+        'th' => 'م',
         'ago' => 'قبل',
         'now' => 'الان',
         'later' => 'بعد',
