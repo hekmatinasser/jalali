@@ -273,7 +273,7 @@ class ComparisonTest extends TestCase
         $datetime = Jalali::parse('1397-10-10 21:30:50');
         $target = Jalali::parse('1398-10-10 21:30:01');
 
-//        Jalali::setTestNow('1397-10-10 21:30:50');
+        //        Jalali::setTestNow('1397-10-10 21:30:50');
 
         $this->assertTrue($datetime->isWeekday());
         $this->assertFalse($datetime->isWeekend());
