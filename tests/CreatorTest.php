@@ -70,9 +70,14 @@ class CreatorTest extends TestCase
 
     public function testDatetime()
     {
-        $datetime = jalali('2019-01-01 10:20:11')->datetime()->format('Y-m-d H:i:s');
+        $datetime = jalali('2019-01-01 10:20:11')->datetime();
 
-        $this->assertEquals('2019-01-01 10:20:11', $datetime);
+        $this->assertInstanceOf(\DateTimeInterface::class, $datetime);
+        $this->assertInstanceOf(\DateTime::class, $datetime);
+
+        $formattedDate = $datetime->format('Y-m-d H:i:s');
+
+        $this->assertEquals('2019-01-01 10:20:11', $formattedDate);
     }
 
     public function testParse()

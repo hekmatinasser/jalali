@@ -3,6 +3,7 @@
 namespace Hekmatinasser\Jalali\Traits;
 
 use DateTime;
+use DateTimeInterface;
 use Exception;
 
 trait Transformation
@@ -93,10 +94,10 @@ trait Transformation
     /**
      * Create a DateTime instance from Jalali
      *
-     * @return DateTime $datetime
+     * @return DateTimeInterface $datetime
      * @throws Exception
      */
-    public function datetime(): DateTime
+    public function datetime(): DateTimeInterface
     {
         $datetime = new DateTime("@{$this->getTimestamp()}");
 
