@@ -92,7 +92,7 @@ trait Translator
      * @param string $locale
      * @param array $messages
      */
-    public function setMessages(string $locale, array $messages)
+    public static function setMessages(string $locale, array $messages)
     {
         if (static::loadMessages($locale)) {
             static::$messages = array_merge(static::$messages, $messages);
