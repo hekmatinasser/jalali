@@ -12,7 +12,7 @@ trait Formatting
     /**
      * Reset the format used to the default when type juggling a Jalali instance to a string
      */
-    public static function resetFormat()
+    public static function resetFormat(): void
     {
         static::setFormat(static::DEFAULT_STRING_FORMAT);
     }
@@ -22,7 +22,7 @@ trait Formatting
      *
      * @param string $format
      */
-    public static function setFormat(string $format)
+    public static function setFormat(string $format): void
     {
         static::$stringFormat = $format;
     }

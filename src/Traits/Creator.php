@@ -18,7 +18,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @throws InvalidDatetimeException
      */
-    public function __construct($datetime = null, $timezone = null)
+    public function __construct(Jalali|DateTime|string|int|null $datetime = null, DateTimeZone|string|null $timezone = null)
     {
         $gregorianDatetime = $datetime;
         if (empty($datetime)) {
@@ -59,10 +59,10 @@ trait Creator
     /**
      * Create a Jalali now datetime
      *
-     * @param null $timezone
+     * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function now($timezone = null): static
+    public static function now(DateTimeZone|string|null $timezone = null): static
     {
         return new static(null, $timezone);
     }
@@ -103,11 +103,11 @@ trait Creator
     /**
      * Create a Jalali instance from a DateTime one
      *
-     * @param $datetime
+     * @param DateTime|int|string|Jalali|null $datetime
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function instance($datetime = null, DateTimeZone|string|null $timezone = null): static
+    public static function instance(DateTime|int|string|Jalali $datetime = null, DateTimeZone|string|null $timezone = null): static
     {
         return new static($datetime, $timezone);
     }
@@ -135,11 +135,11 @@ trait Creator
     /**
      * Create a Jalali instance from a DateTime one
      *
-     * @param $datetime
+     * @param string $datetime
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function parse($datetime, DateTimeZone|string|null $timezone = null): static
+    public static function parse(string $datetime, DateTimeZone|string|null $timezone = null): static
     {
         static::loadMessages();
         $names = array_map(function ($value) {
@@ -246,10 +246,11 @@ trait Creator
     /**
      * Create a timezone instance from a string.
      *
-     * @param null $timezone
+     * @param DateTimeZone|string|null $timezone
      * @return DateTimeZone|string|null
+     * @throws Exception
      */
-    protected static function createTimeZone($timezone = null): DateTimeZone|string|null
+    protected static function createTimeZone(DateTimeZone|string|null $timezone = null): DateTimeZone|string|null
     {
         if ($timezone === null) {
             return new DateTimeZone(date_default_timezone_get());

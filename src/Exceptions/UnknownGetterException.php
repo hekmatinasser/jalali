@@ -11,10 +11,10 @@ class UnknownGetterException extends InvalidArgumentException
      * Constructor.
      *
      * @param string $getter   getter name
-     * @param int code
+     * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct(private $getter, $code = 0, ?Throwable $previous = null)
+    public function __construct(private string $getter, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct("Unknown getter '$getter'", $code, $previous);
     }

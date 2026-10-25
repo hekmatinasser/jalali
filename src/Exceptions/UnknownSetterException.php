@@ -14,7 +14,7 @@ class UnknownSetterException extends BadMethodCallException
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct(private $setter, $code = 0, ?Throwable $previous = null)
+    public function __construct(private string $setter, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct("Unknown setter '$setter'", $code, $previous);
     }

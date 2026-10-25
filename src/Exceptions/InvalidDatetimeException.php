@@ -14,7 +14,7 @@ class InvalidDatetimeException extends InvalidArgumentException
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct(private $datetime, $code = 0, ?Throwable $previous = null)
+    public function __construct(private string $datetime, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct("Unknown datetime '$datetime'.", $code, $previous);
     }

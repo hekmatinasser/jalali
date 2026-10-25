@@ -76,7 +76,7 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validYear(int $value)
+    public static function validYear(int $value): void
     {
         if ($value < 0) {
             throw new InvalidUnitException('year', $value);
@@ -99,7 +99,7 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validMonth(int $value)
+    public static function validMonth(int $value): void
     {
         if ($value < 1 || $value > 12) {
             throw new InvalidUnitException('month', $value);
@@ -126,7 +126,7 @@ trait Validation
      * @param int $month
      * @param int $day
      */
-    public static function validDay(int $year, int $month, int $day)
+    public static function validDay(int $year, int $month, int $day): void
     {
         $dayLastMonthJalali = (static::isLeapYear($year) && $month == 12) ? 30 : static::$daysMonthJalali[$month - 1];
         if ($day < 1 || $day > $dayLastMonthJalali) {
@@ -150,7 +150,7 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validHour(int $value)
+    public static function validHour(int $value): void
     {
         if ($value < 0 || $value > 23) {
             throw new InvalidUnitException('hour', $value);
@@ -173,7 +173,7 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validMinute(int $value)
+    public static function validMinute(int $value): void
     {
         if ($value < 0 || $value > 59) {
             throw new InvalidUnitException('minute', $value);
@@ -196,7 +196,7 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validSecond(int $value)
+    public static function validSecond(int $value): void
     {
         if ($value < 0 || $value > 59) {
             throw new InvalidUnitException('second', $value);
@@ -219,7 +219,7 @@ trait Validation
      *
      * @param int $value
      */
-    public static function validMicro(int $value)
+    public static function validMicro(int $value): void
     {
         if ($value < 0 || $value > 999999) {
             throw new InvalidUnitException('micro', $value);
@@ -233,7 +233,7 @@ trait Validation
      * @param int $month
      * @param int $day
      */
-    public static function validDate(int $year, int $month, int $day)
+    public static function validDate(int $year, int $month, int $day): void
     {
         static::validYear($year);
         static::validMonth($month);
@@ -248,7 +248,7 @@ trait Validation
      * @param int $second
      * @param int $micro
      */
-    public static function validTime(int $hour, int $minute, int $second, int $micro = 0)
+    public static function validTime(int $hour, int $minute, int $second, int $micro = 0): void
     {
         static::validHour($hour);
         static::validMinute($minute);
@@ -269,7 +269,7 @@ trait Validation
      * @param int $second
      * @param int $micro
      */
-    public static function validDateTime(int $year, int $month, int $day, int $hour, int $minute, int $second, int $micro = 0)
+    public static function validDateTime(int $year, int $month, int $day, int $hour, int $minute, int $second, int $micro = 0): void
     {
         static::validDate($year, $month, $day);
         static::validTime($hour, $minute, $second, $micro);

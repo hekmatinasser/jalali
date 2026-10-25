@@ -21,7 +21,7 @@ trait Translator
     /**
      * Reset the format used to the default when type juggling a Jalali instance to a string
      */
-    public static function resetLocale()
+    public static function resetLocale(): void
     {
         static::setLocale(static::DEFAULT_LOCALE);
     }
@@ -92,7 +92,7 @@ trait Translator
      * @param string $locale
      * @param array $messages
      */
-    public static function setMessages(string $locale, array $messages)
+    public static function setMessages(string $locale, array $messages): void
     {
         if (static::loadMessages($locale)) {
             static::$messages = array_merge(static::$messages, $messages);

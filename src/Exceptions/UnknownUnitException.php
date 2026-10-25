@@ -14,7 +14,7 @@ class UnknownUnitException extends InvalidArgumentException
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct(private $unit, $code = 0, ?Throwable $previous = null)
+    public function __construct(private string $unit, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct("Unknown unit '$unit'.", $code, $previous);
     }
