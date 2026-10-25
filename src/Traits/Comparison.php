@@ -407,7 +407,7 @@ trait Comparison
      * @param Jalali|null $datetime The instance to compare with or null to use current day.
      * @return bool
      */
-    public function isSameYear(Jalali $datetime = null): bool
+    public function isSameYear(?Jalali $datetime = null): bool
     {
         return $this->isSameAs('Y', $datetime);
     }

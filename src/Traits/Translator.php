@@ -58,7 +58,7 @@ trait Translator
      *
      * @return bool
      */
-    public static function loadMessages(string $locale = null): bool
+    public static function loadMessages(?string $locale = null): bool
     {
         if ($messages = static::getMessages($locale)) {
             static::$messages = $messages;
@@ -76,7 +76,7 @@ trait Translator
      *
      * @return array|bool
      */
-    public static function getMessages(string $locale = null): bool|array
+    public static function getMessages(?string $locale = null): bool|array
     {
         $data = @include sprintf('%s/Lang/%s.php',  dirname(__DIR__), $locale ?: static::getLocale());
         if ($data !== false) {

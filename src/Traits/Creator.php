@@ -51,7 +51,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    protected function resolve(Jalali|DateTime|string|int|null $datetime = null, DateTimeZone|string $timezone = null): static
+    protected function resolve(Jalali|DateTime|string|int|null $datetime = null, DateTimeZone|string|null $timezone = null): static
     {
         return ($datetime instanceof Jalali) ? $datetime : new static($datetime, $timezone);
     }
@@ -73,7 +73,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function today(DateTimeZone|string $timezone = null): static
+    public static function today(DateTimeZone|string|null $timezone = null): static
     {
         return static::now($timezone)->startDay();
     }
@@ -84,7 +84,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function tomorrow(DateTimeZone|string $timezone = null): static
+    public static function tomorrow(DateTimeZone|string|null $timezone = null): static
     {
         return static::now($timezone)->addDay()->startDay();
     }
@@ -95,7 +95,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function yesterday(DateTimeZone|string $timezone = null): static
+    public static function yesterday(DateTimeZone|string|null $timezone = null): static
     {
         return static::now($timezone)->subDay()->startDay();
     }
@@ -107,7 +107,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function instance($datetime = null, DateTimeZone|string $timezone = null): static
+    public static function instance($datetime = null, DateTimeZone|string|null $timezone = null): static
     {
         return new static($datetime, $timezone);
     }
@@ -139,7 +139,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function parse($datetime, DateTimeZone|string $timezone = null): static
+    public static function parse($datetime, DateTimeZone|string|null $timezone = null): static
     {
         static::loadMessages();
         $names = array_map(function ($value) {
@@ -168,7 +168,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function parseFormat(string $format, string $datetime, DateTimeZone|string $timezone = null): static
+    public static function parseFormat(string $format, string $datetime, DateTimeZone|string|null $timezone = null): static
     {
         static::loadMessages();
         $formatted = self::faToEnNumbers(self::arToEnNumbers($datetime));
@@ -194,7 +194,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function create(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
+    public static function create(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string|null $timezone = null): static
     {
         return static::createGregorian($year, $month, $day, $hour, $minute, $second, $timezone);
     }
@@ -208,7 +208,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
+    public static function createDate(int $year, int $month, int $day, DateTimeZone|string|null $timezone = null): static
     {
         list($hour, $minute, $second) = explode('-', (new DateTime())->format('G-i-s'));
 
@@ -224,7 +224,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
+    public static function createTime(int $hour, int $minute, int $second, DateTimeZone|string|null $timezone = null): static
     {
         list($year, $month, $day) = explode('-', (new DateTime())->format('Y-n-j'));
 
@@ -238,7 +238,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createTimestamp(int $timestamp, DateTimeZone|string $timezone = null): static
+    public static function createTimestamp(int $timestamp, DateTimeZone|string|null $timezone = null): static
     {
         return new static($timestamp, $timezone);
     }
@@ -274,7 +274,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createGregorian(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
+    public static function createGregorian(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string|null $timezone = null): static
     {
         if (! checkdate($month, $day, $year) || ! static::isValidTime($hour, $minute, $second)) {
             throw new InvalidDatetimeException("$year-$month-$day $hour:$minute:$second");
@@ -292,7 +292,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createGregorianDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
+    public static function createGregorianDate(int $year, int $month, int $day, DateTimeZone|string|null $timezone = null): static
     {
         list($hour, $minute, $second) = explode('-', (new DateTime())->format('G-i-s'));
 
@@ -308,7 +308,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createGregorianTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
+    public static function createGregorianTime(int $hour, int $minute, int $second, DateTimeZone|string|null $timezone = null): static
     {
         list($year, $month, $day) = explode('-', (new DateTime())->format('Y-n-j'));
 
@@ -327,7 +327,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createJalali(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
+    public static function createJalali(int $year, int $month, int $day, int $hour, int $minute, int $second, DateTimeZone|string|null $timezone = null): static
     {
         static::validDateTime($year, $month, $day, $hour, $minute, $second);
 
@@ -346,7 +346,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createJalaliDate(int $year, int $month, int $day, DateTimeZone|string $timezone = null): static
+    public static function createJalaliDate(int $year, int $month, int $day, DateTimeZone|string|null $timezone = null): static
     {
         list($hour, $minute, $second) = explode('-', static::now($timezone)->format('G-i-s'));
 
@@ -362,7 +362,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function createJalaliTime(int $hour, int $minute, int $second, DateTimeZone|string $timezone = null): static
+    public static function createJalaliTime(int $hour, int $minute, int $second, DateTimeZone|string|null $timezone = null): static
     {
         list($year, $month, $day) = explode('-', static::now($timezone)->format('Y-n-j'));
 
