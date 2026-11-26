@@ -1,13 +1,15 @@
 <?php
 
+use Hekmatinasser\Jalali\Jalali;
+
 if (! function_exists('jalali')) {
     /**
-     * @param null $datetime
-     * @param null $timezone
-     * @return \Hekmatinasser\Jalali\Jalali
+     * @param Jalali|DateTime|string|int|null $datetime
+     * @param DateTimeZone|string|null $timezone
+     * @return Jalali
      */
-    function jalali($datetime = null, $timezone = null)
+    function jalali(Jalali|DateTime|string|int|null $datetime = null, DateTimeZone|string|null $timezone = null)
     {
-        return new \Hekmatinasser\Jalali\Jalali($datetime, $timezone);
+        return new Jalali($datetime, $timezone);
     }
 }

@@ -107,7 +107,7 @@ trait Creator
      * @param DateTimeZone|string|null $timezone
      * @return static
      */
-    public static function instance(DateTime|int|string|Jalali $datetime = null, DateTimeZone|string|null $timezone = null): static
+    public static function instance(DateTime|int|string|Jalali|null $datetime = null, DateTimeZone|string|null $timezone = null): static
     {
         return new static($datetime, $timezone);
     }
